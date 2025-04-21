@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "334452938830",
+    "project_id": "akol-eih-food-planner",
+    "storage_bucket": "akol-eih-food-planner.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334452938830:android:f3c74302fc2b8a6be30b1f",
+        "android_client_info": {
+          "package_name": "com.example.akoleih"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdb--m8KO0pLsR--Rv1Ur8i9PaNZW5ky8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
