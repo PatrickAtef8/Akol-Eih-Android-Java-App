@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         Button loginButton = findViewById(R.id.btnLogin);
         TextView signupText = findViewById(R.id.textViewSignup); // <-- Link to sign up text
 
-        loginPresenter = new LoginPresenterImpl(this);
+        loginPresenter = new LoginPresenterImpl(this,);
 
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString();
