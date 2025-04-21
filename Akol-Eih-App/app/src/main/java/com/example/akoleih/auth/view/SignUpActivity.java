@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.SignUpContract;
+import com.example.akoleih.auth.model.AuthRepository;
 import com.example.akoleih.auth.presenter.SignUpPresenter;
 import com.example.akoleih.auth.presenter.SignUpPresenterImpl;
+import com.example.akoleih.auth.model.AuthRepositoryImpl;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
 
@@ -31,7 +33,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
         progressBar = findViewById(R.id.progressBar);
         Button signUpButton = findViewById(R.id.btnSignUp);
 
-        signupPresenter = new SignUpPresenterImpl(this);
+        AuthRepository authRepository = new AuthRepositoryImpl();
+        signupPresenter = new SignUpPresenterImpl(this, authRepository);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override

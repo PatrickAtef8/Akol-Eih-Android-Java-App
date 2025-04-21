@@ -14,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.akoleih.MainActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.LoginContract;
+import com.example.akoleih.auth.model.AuthRepository;
 import com.example.akoleih.auth.presenter.LoginPresenter;
 import com.example.akoleih.auth.presenter.LoginPresenterImpl;
+import com.example.akoleih.auth.model.AuthRepositoryImpl;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
@@ -32,9 +34,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         passwordEditText = findViewById(R.id.editTextPassword);
         progressBar = findViewById(R.id.progressBar);
         Button loginButton = findViewById(R.id.btnLogin);
-        TextView signupText = findViewById(R.id.textViewSignup); // <-- Link to sign up text
+        TextView signupText = findViewById(R.id.textViewSignup);
 
-        loginPresenter = new LoginPresenterImpl(this);
+        AuthRepository authRepository = new AuthRepositoryImpl();
+        loginPresenter = new LoginPresenterImpl(this, authRepository);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

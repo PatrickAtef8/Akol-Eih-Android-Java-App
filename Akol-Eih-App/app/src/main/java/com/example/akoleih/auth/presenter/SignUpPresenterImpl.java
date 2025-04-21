@@ -1,19 +1,17 @@
 package com.example.akoleih.auth.presenter;
 
 import com.example.akoleih.auth.contract.SignUpContract;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.akoleih.auth.model.AuthCallback;
+import com.example.akoleih.auth.model.AuthRepository;
 
 public class SignUpPresenterImpl implements SignUpPresenter {
 
     private final SignUpContract.View view;
-    private final FirebaseAuth auth;
+    private final AuthRepository authRepository;
 
-    public SignUpPresenterImpl(SignUpContract.View view) {
+    public SignUpPresenterImpl(SignUpContract.View view, AuthRepository authRepository) {
         this.view = view;
-        this.auth = FirebaseAuth.getInstance();
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -22,21 +20,20 @@ public class SignUpPresenterImpl implements SignUpPresenter {
             view.onSignUpError("Email and password cannot be empty.");
             return;
         }
+
         view.showLoading();
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        view.hideLoading();
-                        view.onSignUpSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        view.hideLoading();
-                        view.onSignUpError(e.getMessage());
-                    }
-                });
+        authRepository.signUp(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess() {
+                view.hideLoading();
+                view.onSignUpSuccess();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                view.hideLoading();
+                view.onSignUpError(message);
+            }
+        });
     }
 }

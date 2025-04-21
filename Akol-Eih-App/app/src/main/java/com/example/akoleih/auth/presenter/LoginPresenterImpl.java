@@ -1,19 +1,17 @@
 package com.example.akoleih.auth.presenter;
 
 import com.example.akoleih.auth.contract.LoginContract;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.akoleih.auth.model.AuthCallback;
+import com.example.akoleih.auth.model.AuthRepository;
 
 public class LoginPresenterImpl implements LoginPresenter {
 
     private final LoginContract.View view;
-    private final FirebaseAuth auth;
+    private final AuthRepository authRepository;
 
-    public LoginPresenterImpl(LoginContract.View view) {
+    public LoginPresenterImpl(LoginContract.View view, AuthRepository authRepository) {
         this.view = view;
-        this.auth = FirebaseAuth.getInstance();
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -24,21 +22,18 @@ public class LoginPresenterImpl implements LoginPresenter {
         }
 
         view.showLoading();
+        authRepository.login(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess() {
+                view.hideLoading();
+                view.onLoginSuccess();
+            }
 
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        view.hideLoading();
-                        view.onLoginSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        view.hideLoading();
-                        view.onLoginError(e.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(String message) {
+                view.hideLoading();
+                view.onLoginError(message);
+            }
+        });
     }
 }
