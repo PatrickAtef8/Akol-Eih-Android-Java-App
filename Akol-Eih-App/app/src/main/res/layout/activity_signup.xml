@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"> <!-- Light teal background -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Account"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#004d40"
+        android:layout_marginBottom="28dp" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:hint="Email"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/edittext_bg"
+        android:padding="12dp"
+        android:textColor="#004d40"
+        android:textColorHint="#80cbc4"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/edittext_bg"
+        android:padding="12dp"
+        android:textColor="#004d40"
+        android:textColorHint="#80cbc4"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnSignUp"
+        android:text="Sign Up"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:backgroundTint="#00796b"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:outlineAmbientShadowColor="#00796b"
+        android:outlineSpotShadowColor="#004d40"
+        android:layout_marginBottom="20dp" />
+</LinearLayout>

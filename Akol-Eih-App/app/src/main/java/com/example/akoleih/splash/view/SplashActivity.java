@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.akoleih.MainActivity;
 import com.example.akoleih.R;
+import com.example.akoleih.auth.view.LoginActivity;
 import com.example.akoleih.splash.contract.SplashContract;
 import com.example.akoleih.splash.presenter.SplashPresenterImpl;
 import com.example.akoleih.splash.presenter.SplashPresenterInterface;
@@ -41,7 +42,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
 
     @Override
     public void navigateToLogin() {
-        //to be implemented
-//        finish();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

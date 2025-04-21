@@ -13,7 +13,27 @@ public class SplashPresenterImpl implements SplashPresenterInterface{
 
     @Override
     public void checkUserSession() {
-            view.navigateToHome();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.reload().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    FirebaseUser refreshedUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if (refreshedUser != null) {
+                        view.navigateToHome();
+                    } else {
+                        FirebaseAuth.getInstance().signOut();
+                        view.navigateToLogin();
+                    }
+                } else {
+                    FirebaseAuth.getInstance().signOut();
+                    view.navigateToLogin();
+                }
+            });
+        } else {
+            view.navigateToLogin();
         }
     }
+        }
+
 
