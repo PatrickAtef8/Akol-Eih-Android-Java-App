@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.akoleih.MainActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.LoginContract;
-import com.example.akoleih.auth.model.AuthRepository;
 import com.example.akoleih.auth.presenter.LoginPresenter;
 import com.example.akoleih.auth.presenter.LoginPresenterImpl;
 import com.example.akoleih.auth.model.AuthRepositoryImpl;
@@ -36,8 +35,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         Button loginButton = findViewById(R.id.btnLogin);
         TextView signupText = findViewById(R.id.textViewSignup);
 
-        AuthRepository authRepository = new AuthRepositoryImpl();
-        loginPresenter = new LoginPresenterImpl(this, authRepository);
+        loginPresenter = new LoginPresenterImpl(this, new AuthRepositoryImpl(this));
+
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

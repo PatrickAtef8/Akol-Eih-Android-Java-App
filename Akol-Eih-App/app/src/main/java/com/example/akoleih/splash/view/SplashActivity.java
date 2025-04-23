@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
             public void run() {
                 presenter.checkUserSession();
             }
-            },2000);
+            },3200);
         }
 
         @Override

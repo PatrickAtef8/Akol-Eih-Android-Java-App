@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,15 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.SignUpContract;
 import com.example.akoleih.auth.model.AuthRepository;
-import com.example.akoleih.auth.presenter.SignUpPresenter;
-import com.example.akoleih.auth.presenter.SignUpPresenterImpl;
 import com.example.akoleih.auth.model.AuthRepositoryImpl;
+import com.example.akoleih.auth.presenter.SignUpPresenterImpl;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
+    private static final int RC_GOOGLE_SIGN_IN = 123;
 
     private EditText emailEditText, passwordEditText;
     private ProgressBar progressBar;
-    private SignUpPresenter signupPresenter;
+    private SignUpPresenterImpl signUpPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +33,33 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
         passwordEditText = findViewById(R.id.editTextPassword);
         progressBar = findViewById(R.id.progressBar);
         Button signUpButton = findViewById(R.id.btnSignUp);
+        Button googleSignInButton = findViewById(R.id.btnGoogleSignIn);
+        TextView loginText = findViewById(R.id.textViewLogin);
 
-        AuthRepository authRepository = new AuthRepositoryImpl();
-        signupPresenter = new SignUpPresenterImpl(this, authRepository);
+        signUpPresenter = new SignUpPresenterImpl(this, new AuthRepositoryImpl(this));
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                signupPresenter.signUp(email, password);
-            }
+        signUpButton.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+            signUpPresenter.signUp(email, password);
         });
+
+        googleSignInButton.setOnClickListener(v -> {
+            signUpPresenter.signInWithGoogle(this);
+        });
+
+        loginText.setOnClickListener(v -> {
+            startActivity(new Intent(this, LoginActivity.class));
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
+            signUpPresenter.handleGoogleSignInResult(data);
+        }
     }
 
     @Override
@@ -58,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
 
     @Override
     public void onSignUpSuccess() {
-        Toast.makeText(this, "Sign up successful! Please Login", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
