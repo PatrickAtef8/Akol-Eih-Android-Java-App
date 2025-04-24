@@ -69,4 +69,14 @@ dependencies {
 
 
     implementation (libs.play.services.auth)
+
+
+
+    // ✅ Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
+
+    // ✅ Glide
+    implementation(libs.glide)
 }

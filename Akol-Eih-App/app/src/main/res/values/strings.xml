@@ -5,4 +5,6 @@
     <string name="title_search">search_title</string>
     <string name="title_favorites">favorites_title</string>
     <string name="title_calendar">calendar_title</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
