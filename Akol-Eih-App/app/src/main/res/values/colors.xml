@@ -14,4 +14,20 @@
     <!-- Text colors -->
     <color name="gray_900">#212121</color>
     <color name="gray_600">#757575</color>
+    <color name="gray_400">#BDBDBD</color>
+
+    <!-- Bottom Navigation specific colors -->
+    <color name="bottom_nav_background">@color/white</color>
+    <color name="bottom_nav_icon_selected">@color/teal_700</color>
+    <color name="bottom_nav_icon_unselected">@color/gray_600</color>
+    <color name="bottom_nav_ripple">@color/teal_50</color>
+    <color name="surface_container">#F8FDFC</color>
+
+    <!-- Status bar colors -->
+    <color name="status_bar_color">@color/teal_700</color>
+
+    <!-- Home screen accent colors -->
+    <color name="accent_red">#F44336</color>
+    <color name="accent_blue">#2196F3</color>
+    <color name="accent_yellow">#FFEB3B</color>
 </resources>

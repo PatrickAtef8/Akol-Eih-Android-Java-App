@@ -1,16 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="Base.Theme.AkolEih" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color -->
+        <!-- Color scheme -->
         <item name="colorPrimary">@color/teal_700</item>
         <item name="colorPrimaryContainer">@color/teal_100</item>
-
-        <!-- Secondary brand color -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryContainer">@color/teal_50</item>
-
-        <!-- Status bar color -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
 
         <!-- Surface colors -->
         <item name="colorSurface">@color/white</item>
@@ -21,39 +16,66 @@
         <item name="colorOnSurface">@color/gray_900</item>
         <item name="colorOnSurfaceVariant">@color/gray_600</item>
 
-        <!-- Button styles -->
+        <!-- Status bar -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:windowLightStatusBar" >true</item>
+
+        <!-- Navigation bar -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" >true</item>
+
+        <!-- Component styles -->
         <item name="materialButtonStyle">@style/Widget.AkolEih.Button</item>
-
-        <!-- Text field styles -->
         <item name="textInputStyle">@style/Widget.AkolEih.TextInputLayout.OutlinedBox</item>
+        <item name="bottomNavigationStyle">@style/Widget.AkolEih.BottomNavigationView</item>
 
-        <!-- Enable edge-to-edge display -->
+        <!-- Edge-to-edge display -->
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
     </style>
 
     <style name="Theme.AkolEih" parent="Base.Theme.AkolEih" />
 
-    <!-- Custom Button Style -->
+    <!-- Button Style -->
     <style name="Widget.AkolEih.Button" parent="Widget.Material3.Button">
         <item name="android:minHeight">48dp</item>
-        <item name="android:paddingStart">24dp</item>
-        <item name="android:paddingEnd">24dp</item>
-        <item name="cornerRadius">8dp</item>
+        <item name="android:paddingHorizontal">24dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.AkolEih.MediumComponent</item>
         <item name="android:elevation">2dp</item>
-        <item name="android:stateListAnimator">@anim/button_state_list_animator</item>
     </style>
 
-    <!-- Custom TextInputLayout Style -->
+    <!-- Text Field Style -->
     <style name="Widget.AkolEih.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">1.5dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.AkolEih.MediumComponent</item>
         <item name="hintTextColor">?attr/colorOnSurfaceVariant</item>
-        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Bottom Navigation Style -->
+    <style name="Widget.AkolEih.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:layout_height">72dp</item>
+        <item name="android:background">@color/surface_container</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.AkolEih.BottomNav.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.AkolEih.BottomNav.Inactive</item>
+        <item name="itemRippleColor">@color/teal_50</item>
+    </style>
+
+    <!-- Bottom Navigation Text Styles -->
+    <style name="TextAppearance.AkolEih.BottomNav.Active" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/teal_700</item>
+    </style>
+
+    <style name="TextAppearance.AkolEih.BottomNav.Inactive" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray_600</item>
+    </style>
+
+    <!-- Shape Styles -->
+    <style name="ShapeAppearance.AkolEih.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 </resources>

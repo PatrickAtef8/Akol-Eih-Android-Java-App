@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AkolEih</string>
     <string name="default_web_client_id">AIzaSyDYm7my08VsnEq5hgSGgkdCpvgukwoKU_Y</string>
+    <string name="title_home">home_title</string>
+    <string name="title_search">search_title</string>
+    <string name="title_favorites">favorites_title</string>
+    <string name="title_calendar">calendar_title</string>
 </resources>
