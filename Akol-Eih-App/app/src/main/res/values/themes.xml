@@ -13,6 +13,7 @@
 
         <!-- Text colors -->
         <item name="colorOnPrimary">@color/white</item>
+
         <item name="colorOnSurface">@color/gray_900</item>
         <item name="colorOnSurfaceVariant">@color/gray_600</item>
 
@@ -77,5 +78,19 @@
     <style name="ShapeAppearance.AkolEih.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Custom font family -->
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MyApp.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MyApp.Headline2</item>
+    </style>
+
+    <style name="TextAppearance.MyApp.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">@font/playfair_display_bold</item>
+    </style>
+
+    <style name="TextAppearance.MyApp.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/playfair_display_medium</item>
     </style>
 </resources>

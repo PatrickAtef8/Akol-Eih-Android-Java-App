@@ -79,4 +79,13 @@ dependencies {
 
     // ✅ Glide
     implementation(libs.glide)
+    implementation (libs.cardview)
+    implementation (libs.lottie)
+
+
+    // Responsive sizing
+    implementation (libs.sdp.android)
+    implementation (libs.ssp.android)
+
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }

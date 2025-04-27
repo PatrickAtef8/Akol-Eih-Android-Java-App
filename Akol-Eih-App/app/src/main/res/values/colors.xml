@@ -30,4 +30,12 @@
     <color name="accent_red">#F44336</color>
     <color name="accent_blue">#2196F3</color>
     <color name="accent_yellow">#FFEB3B</color>
+    <color name="primary">#6200EE</color>
+    <color name="primaryDark">#3700B3</color>
+    <color name="primaryLight">#BB86FC</color>
+    <color name="background">#F5F5F5</color>
+    <color name="gold">#FFD700</color>
+    <color name="gold_light">#FFECB3</color>
+    <color name="dark_navy">#0F0C29</color>
+    <color name="deep_purple">#302B63</color>
 </resources>

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.akoleih.MainActivity;
+import com.example.akoleih.home.view.HomeActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.LoginContract;
 import com.example.akoleih.auth.presenter.LoginPresenter;
@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onLoginSuccess() {
         Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
 
