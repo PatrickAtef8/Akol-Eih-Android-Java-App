@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         passwordEditText = findViewById(R.id.editTextPassword);
         progressBar = findViewById(R.id.progressBar);
         Button loginButton = findViewById(R.id.btnLogin);
-        TextView signupText = findViewById(R.id.textViewSignup); // <-- Link to sign up text
+        TextView signupText = findViewById(R.id.btnSignUp); // <-- Link to sign up text
 
         loginPresenter = new LoginPresenterImpl(this,);
 

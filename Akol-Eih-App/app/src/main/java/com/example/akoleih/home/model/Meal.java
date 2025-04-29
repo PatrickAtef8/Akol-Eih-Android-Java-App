@@ -1,48 +1,45 @@
+// Meal.java
 package com.example.akoleih.home.model;
 
-
-import com.google.gson.annotations.SerializedName;
-
 public class Meal {
-    @SerializedName("idMeal")
-    private String id;
-    @SerializedName("strMeal")
-    private String name;
-    @SerializedName("strMealThumb")
-    private String thumbnail;
-    @SerializedName("strInstructions")
-    private String instructions;
+    private String idMeal;
+    private String strMeal;
+    private String strMealThumb;
+    private String strInstructions;
+    private String strArea;
+    private String strIngredient1, strIngredient2, strIngredient3; // Add up to 20
+    private String strMeasure1, strMeasure2, strMeasure3; // Add up to 20
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public String getIdMeal() {
+        return idMeal;
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return strMeal;
     }
 
     public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+        return strMealThumb;
     }
 
     public String getInstructions() {
-        return instructions;
+        return strInstructions;
     }
 
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public String getArea() {
+        return strArea;
+    }
+
+    public String getIngredients() {
+        // Combine all ingredients and measures
+        StringBuilder ingredients = new StringBuilder();
+        if (strIngredient1 != null && !strIngredient1.isEmpty()) {
+            ingredients.append(strIngredient1).append(": ").append(strMeasure1).append("\n");
+        }
+        if (strIngredient2 != null && !strIngredient2.isEmpty()) {
+            ingredients.append(strIngredient2).append(": ").append(strMeasure2).append("\n");
+        }
+        // Continue for all ingredients...
+        return ingredients.toString();
     }
 }

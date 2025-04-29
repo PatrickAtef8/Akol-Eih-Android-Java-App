@@ -56,7 +56,7 @@ public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.Vi
             super(itemView);
             image = itemView.findViewById(R.id.meal_image);
             name = itemView.findViewById(R.id.meal_name);
-//            instructions = itemView.findViewById(R.id.meal_instructions);
+//           instructions = itemView.findViewById(R.id.meal_instructions);
         }
     }
 }

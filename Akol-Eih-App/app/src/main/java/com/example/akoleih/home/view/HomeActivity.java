@@ -1,9 +1,9 @@
+// HomeActivity.java
 package com.example.akoleih.home.view;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import com.example.akoleih.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -28,15 +28,13 @@ public class HomeActivity extends AppCompatActivity {
             item -> {
                 Fragment selectedFragment = null;
 
-
-                /************* will add a switch case for the other fragments**********/
                 selectedFragment = new HomeFragment();
 
-
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, selectedFragment)
+                            .commit();
+                }
 
                 return true;
             };

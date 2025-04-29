@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:layout_marginBottom="16dp"
+    android:backgroundTint="@android:color/white"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:strokeColor="@color/light_gray"
+    app:strokeWidth="0.5dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <!-- Meal Image with Rounded Top Corners -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/meal_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/foodloading"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/meal_info"
+            app:shapeAppearance="@style/TopRoundedImageCornersdetails" />
+
+        <!-- Gradient Overlay (optional enhancement) -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@id/meal_image"
+            app:layout_constraintStart_toStartOf="@id/meal_image"
+            app:layout_constraintEnd_toEndOf="@id/meal_image" />
+
+        <!-- Meal Info -->
+        <LinearLayout
+            android:id="@+id/meal_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/meal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/libre_baskerville"
+                android:text="Meal Name"
+                android:textColor="#161E26"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/meal_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/libre_baskerville_italic"
+                android:text="Italian"
+                android:textColor="#161E26"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Favorite Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/favorite_button"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:checkable="true"
+            android:padding="12dp"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_favoritepic"
+            app:iconPadding="0dp"
+            app:iconSize="24dp"
+            app:iconTint="@color/primary_dark"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

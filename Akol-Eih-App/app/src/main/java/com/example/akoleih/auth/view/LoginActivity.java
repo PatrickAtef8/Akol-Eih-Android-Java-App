@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         passwordEditText = findViewById(R.id.editTextPassword);
         progressBar = findViewById(R.id.progressBar);
         Button loginButton = findViewById(R.id.btnLogin);
-        TextView signupText = findViewById(R.id.textViewSignup);
+        TextView signupText = findViewById(R.id.btnSignUp);
 
         loginPresenter = new LoginPresenterImpl(this, new AuthRepositoryImpl(this));
 
@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
+
+
 
     @Override
     public void onLoginError(String message) {

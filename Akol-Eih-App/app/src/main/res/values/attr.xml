@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom attributes -->
+    <attr name="cardBackground" format="reference|color" />
+    <attr name="primaryTextColor" format="reference|color" />
+    <attr name="secondaryTextColor" format="reference|color" />
+    <attr name="chipBackgroundColor" format="reference|color" />
+    <attr name="buttonBackgroundColor" format="reference|color" />
+    <attr name="buttonTextColor" format="reference|color" />
+</resources>

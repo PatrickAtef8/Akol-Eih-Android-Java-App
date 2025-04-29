@@ -1,4 +1,6 @@
+// CategoriesAdapter.java
 package com.example.akoleih.home.adapter;
+
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Category;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
     private List<Category> categories;
+    private OnCategoryClickListener listener;
 
-    public CategoriesAdapter(List<Category> categories) {
+    public CategoriesAdapter(List<Category> categories, OnCategoryClickListener listener) {
         this.categories = categories != null ? categories : new ArrayList<>();
-
+        this.listener = listener;
     }
+
     @SuppressLint("NotifyDataSetChanged")
     public void updateCategories(List<Category> newCategories) {
         this.categories = newCategories != null ? newCategories : new ArrayList<>();
@@ -45,6 +48,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
                 .error(R.drawable.foodloading)
                 .into(holder.image);
 
+        holder.itemView.setOnClickListener(v -> listener.onCategoryClick(category));
     }
 
     @Override
@@ -61,5 +65,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             image = itemView.findViewById(R.id.category_image);
             name = itemView.findViewById(R.id.category_name);
         }
+    }
+
+    public interface OnCategoryClickListener {
+        void onCategoryClick(Category category);
     }
 }

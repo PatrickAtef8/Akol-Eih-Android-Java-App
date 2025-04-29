@@ -1,3 +1,4 @@
+// CategoriesResponse.java
 package com.example.akoleih.home.network.model;
 
 import com.example.akoleih.home.model.Category;

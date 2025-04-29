@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="120dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:backgroundTint="@android:color/white"
+    app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
-    >
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/light_gray"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:background="@android:color/white"
+        android:padding="12dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
-        <ImageView
+        <!-- Rounded Image -->
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/category_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/foodloading" />
+            android:background="@android:color/transparent"
+            android:clipToOutline="true"
+            android:padding="4dp"
+            android:src="@drawable/foodloading"
+            app:shapeAppearance="@style/ImageRoundedSmallCorners"/>
 
+        <!-- Category Name -->
         <TextView
             android:id="@+id/category_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/playfair_display_medium"
-            android:text="Category Name"
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/libre_baskerville_bold"
+            android:maxLines="2"
+            android:text="Category"
+            android:textAlignment="center"
             android:textColor="#161E26"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="13sp" />
+
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

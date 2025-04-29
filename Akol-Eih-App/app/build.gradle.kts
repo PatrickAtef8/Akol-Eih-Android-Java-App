@@ -88,4 +88,5 @@ dependencies {
     implementation (libs.ssp.android)
 
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 }

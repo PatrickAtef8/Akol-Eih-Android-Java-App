@@ -1,3 +1,4 @@
+// HomeFragment.java
 package com.example.akoleih.home.view;
 
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import com.example.akoleih.home.network.api.CategoriesRemoteDataSource;
 import com.example.akoleih.home.network.api.MealRemoteDataSource;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements HomeContract.View {
+public class HomeFragment extends Fragment implements HomeContract.View, CategoriesAdapter.OnCategoryClickListener {
     private HomePresenter presenter;
     private CategoriesAdapter categoriesAdapter;
     private RandomMealAdapter randomMealAdapter;
@@ -47,7 +48,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         categoriesRecyclerView = view.findViewById(R.id.categories_recycler_view);
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        categoriesAdapter = new CategoriesAdapter(null);
+        categoriesAdapter = new CategoriesAdapter(null, this);
         categoriesRecyclerView.setAdapter(categoriesAdapter);
 
         RecyclerView randomMealRecyclerView = view.findViewById(R.id.random_meal_recycler_view);
@@ -67,22 +68,29 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showCategories(List<Category> categories) {
-        if (categoriesAdapter == null) {
-            categoriesAdapter = new CategoriesAdapter(categories);
-            categoriesRecyclerView.setAdapter(categoriesAdapter);
-        } else {
-            categoriesAdapter.updateCategories(categories);
-        }
+        categoriesAdapter.updateCategories(categories);
     }
+
     @Override
     public void showRandomMeal(Meal meal) {
         randomMealAdapter.setMeal(meal);
     }
 
     @Override
-    public void showError(String message) {
-        //  with a Toast or Snackbar
+    public void onCategoryClick(Category category) {
+        MealsFragment fragment = MealsFragment.newInstance(category.getName());
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
+
+    @Override
+    public void showMealsByCategory(List<Meal> meals) {}
+    @Override
+    public void showMealDetails(Meal meal) {}
+    @Override
+    public void showError(String message) {}
 
     @Override
     public void onDestroy() {

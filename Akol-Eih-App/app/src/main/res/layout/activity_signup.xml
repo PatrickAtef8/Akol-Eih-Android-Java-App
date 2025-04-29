@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splashfive"
+    android:background="@drawable/splashwhite"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="24dp"
     tools:ignore="ExtraText">
 
-    <!-- Create Account text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="Create Account"
-        android:textColor="#FFFFFF"
+        android:fontFamily="@font/libre_baskerville"
+        android:textColor="#161E26"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -25,18 +25,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:boxBackgroundColor="#1AFFFFFF"
-        app:boxStrokeColor="#FFFFFF"
-        app:hintTextColor="#B3FFFFFF">
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#161E26"
+        app:hintTextColor="#B3161E26">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/libre_baskerville"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#B3FFFFFF" />
+            android:textColor="#161E26"
+            android:textColorHint="#B3161E26"
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,11 +46,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:boxBackgroundColor="#1AFFFFFF"
-        app:boxStrokeColor="#FFFFFF"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeColor="#161E26"
         app:endIconMode="password_toggle"
-        app:endIconTint="#FFFFFF"
-        app:hintTextColor="#B3FFFFFF">
+        app:endIconTint="#161E26"
+        app:hintTextColor="#B3161E26">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextPassword"
@@ -56,8 +58,9 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#B3FFFFFF" />
+            android:textColor="#161E26"
+            android:textColorHint="#B3161E26"
+            android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -66,11 +69,11 @@
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:text="Sign Up"
+        android:fontFamily="@font/libre_baskerville"
         android:textColor="#FFFFFF"
         app:backgroundTint="#4CAF50"
         app:cornerRadius="8dp" />
 
-    <!-- OR divider -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,37 +85,40 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#B3FFFFFF" />
+            android:background="#161E26" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:text="OR"
-            android:textColor="#FFFFFF"
+            android:fontFamily="@font/libre_baskerville_italic"
+            android:textColor="#161E26"
             android:textSize="12sp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1"
-            android:background="#B3FFFFFF" />
+            android:background="#161E26" />
     </LinearLayout>
 
-    <!-- Sign in with Google button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogleSignIn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:text="Sign in with Google"
+        android:fontFamily="@font/libre_baskerville"
         android:textColor="#757575"
         app:backgroundTint="#FFFFFF"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_google_logo"
         app:iconGravity="start"
         app:iconPadding="8dp"
-        app:iconTint="@null" />
+        app:iconTint="@null"
+        app:strokeColor="#757575"
+        app:strokeWidth="1dp" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
@@ -121,7 +127,7 @@
         android:layout_marginBottom="24dp"
         android:indeterminate="true"
         android:visibility="gone"
-        app:indicatorColor="#FFFFFF" />
+        app:indicatorColor="#161E26" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,7 +139,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already have an account?"
-            android:textColor="#B3FFFFFF"
+            android:fontFamily="@font/libre_baskerville"
+            android:textColor="#B3161E26"
             android:textSize="14sp" />
 
         <TextView
@@ -144,8 +151,9 @@
             android:clickable="true"
             android:focusable="true"
             android:text="Login"
-            android:textColor="#FFFFFF"
+            android:fontFamily="@font/libre_baskerville_bold"
+            android:textColor="#161E26"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            />
     </LinearLayout>
 </LinearLayout>
