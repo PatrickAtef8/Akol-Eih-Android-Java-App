@@ -29,7 +29,7 @@
 
         <!-- MainActivity should NOT have launcher intent filter -->
         <activity
-            android:name=".home.view.HomeActivity"
+            android:name=".home.view.NavigationActivity"
             android:exported="false" />  <!-- Changed to false since it's not an entry point -->
 
         <activity android:name=".auth.view.SignUpActivity" android:exported="true" />
