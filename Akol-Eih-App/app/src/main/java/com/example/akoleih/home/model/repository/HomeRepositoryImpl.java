@@ -1,16 +1,14 @@
+// HomeRepositoryImpl.java
 package com.example.akoleih.home.model.repository;
-
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
 import com.example.akoleih.home.network.api.CategoriesRemoteDataSource;
 import com.example.akoleih.home.network.api.MealRemoteDataSource;
 import com.example.akoleih.home.network.model.CategoriesResponse;
 import com.example.akoleih.home.network.model.MealResponse;
-
 import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
@@ -22,6 +20,8 @@ public class HomeRepositoryImpl implements HomeRepository {
     private final MealRemoteDataSource mealRemoteDataSource;
     private final MutableLiveData<List<Category>> categoriesLiveData = new MutableLiveData<>();
     private final MutableLiveData<Meal> randomMealLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Meal>> mealsByCategoryLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Meal> mealDetailsLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public HomeRepositoryImpl(CategoriesRemoteDataSource categoriesRemoteDataSource,
@@ -32,28 +32,26 @@ public class HomeRepositoryImpl implements HomeRepository {
 
     @Override
     public LiveData<List<Category>> getCategories() {
-        MutableLiveData<List<Category>> liveData = new MutableLiveData<>();
-
         categoriesRemoteDataSource.getCategories().enqueue(new Callback<CategoriesResponse>() {
             @Override
             public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getCategories() != null) {
-                    liveData.setValue(response.body().getCategories());
+                    categoriesLiveData.setValue(response.body().getCategories());
                 } else {
-                    liveData.setValue(new ArrayList<>());
+                    categoriesLiveData.setValue(new ArrayList<>());
                     errorLiveData.setValue("No categories found");
                 }
             }
 
             @Override
             public void onFailure(Call<CategoriesResponse> call, Throwable t) {
-                liveData.setValue(new ArrayList<>()); // Return empty list instead of null
+                categoriesLiveData.setValue(new ArrayList<>());
                 errorLiveData.setValue(t.getMessage());
             }
         });
-
-        return liveData;
+        return categoriesLiveData;
     }
+
     @Override
     public LiveData<Meal> getRandomMeal() {
         mealRemoteDataSource.getRandomMeal().enqueue(new Callback<MealResponse>() {
@@ -72,6 +70,48 @@ public class HomeRepositoryImpl implements HomeRepository {
             }
         });
         return randomMealLiveData;
+    }
+
+    @Override
+    public LiveData<List<Meal>> getMealsByCategory(String category) {
+        mealRemoteDataSource.getMealsByCategory(category).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    mealsByCategoryLiveData.setValue(response.body().getMeals());
+                } else {
+                    mealsByCategoryLiveData.setValue(new ArrayList<>());
+                    errorLiveData.setValue("No meals found for this category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                mealsByCategoryLiveData.setValue(new ArrayList<>());
+                errorLiveData.setValue(t.getMessage());
+            }
+        });
+        return mealsByCategoryLiveData;
+    }
+
+    @Override
+    public LiveData<Meal> getMealDetails(String mealId) {
+        mealRemoteDataSource.getMealDetails(mealId).enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().getMeals().isEmpty()) {
+                    mealDetailsLiveData.setValue(response.body().getMeals().get(0));
+                } else {
+                    errorLiveData.setValue("Meal details not found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable t) {
+                errorLiveData.setValue(t.getMessage());
+            }
+        });
+        return mealDetailsLiveData;
     }
 
     @Override

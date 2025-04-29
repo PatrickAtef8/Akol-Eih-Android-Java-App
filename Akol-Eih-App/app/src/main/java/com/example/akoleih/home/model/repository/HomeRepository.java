@@ -9,5 +9,10 @@ import java.util.List;
 public interface HomeRepository {
     LiveData<List<Category>> getCategories();
     LiveData<Meal> getRandomMeal();
+
+    LiveData<List<Meal>> getMealsByCategory(String category);
+
+    LiveData<Meal> getMealDetails(String mealId);
+
     LiveData<String> getError();
 }
