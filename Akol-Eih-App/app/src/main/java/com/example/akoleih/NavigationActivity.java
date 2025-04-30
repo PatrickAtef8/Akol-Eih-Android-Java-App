@@ -1,10 +1,7 @@
-// HomeActivity.java
-package com.example.akoleih.home.view;
-
+package com.example.akoleih;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import com.example.akoleih.R;
+import com.example.akoleih.home.view.HomeFirstFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavigationActivity extends AppCompatActivity {
@@ -17,6 +14,8 @@ public class NavigationActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFirstFragment())
@@ -26,16 +25,22 @@ public class NavigationActivity extends AppCompatActivity {
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             item -> {
-                Fragment selectedFragment = null;
+                int itemId = item.getItemId();
 
-                selectedFragment = new HomeFirstFragment();
-
-                if (selectedFragment != null) {
+                if (itemId == R.id.nav_home) {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, selectedFragment)
+                            .replace(R.id.fragment_container, new HomeFirstFragment())
                             .commit();
+                    return true;
+                } else if (itemId == R.id.nav_search) {
+                   // startActivity(new Intent(NavigationActivity.this, SearchActivity.class));
+                    return true;
+                } else if (itemId == R.id.nav_favorites) {
+                    // getSupportFragmentManager().beginTransaction()
+                    //         .replace(R.id.fragment_container, new FavoritesFragment())
+                    //         .commit();
+                    return true;
                 }
-
-                return true;
+                return false;
             };
 }

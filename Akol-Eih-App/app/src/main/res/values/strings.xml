@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">AkolEih</string>
     <string name="default_web_client_id">AIzaSyDYm7my08VsnEq5hgSGgkdCpvgukwoKU_Y</string>
-    <string name="title_home">home_title</string>
-    <string name="title_search">search_title</string>
-    <string name="title_favorites">favorites_title</string>
-    <string name="title_calendar">calendar_title</string>
+    <string name="home_title">Home</string>
+    <string name="search_title">Search</string>
+    <string name="favorites_title">Favorites</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

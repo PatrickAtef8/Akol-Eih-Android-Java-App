@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.akoleih.home.view.NavigationActivity;
+import com.example.akoleih.NavigationActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.contract.LoginContract;
 import com.example.akoleih.auth.presenter.LoginPresenter;
