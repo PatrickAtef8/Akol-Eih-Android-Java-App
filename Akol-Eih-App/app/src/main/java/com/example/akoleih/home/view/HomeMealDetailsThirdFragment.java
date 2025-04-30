@@ -23,14 +23,14 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment implements HomeContract.View {
+public class HomeMealDetailsThirdFragment extends Fragment implements HomeContract.View {
     private HomePresenter presenter;
     private String mealId;
     private ShapeableImageView mealImage;
     private TextView mealName, mealArea, mealInstructions, mealIngredients;
 
-    public static MealDetailsFragment newInstance(String mealId) {
-        MealDetailsFragment fragment = new MealDetailsFragment();
+    public static HomeMealDetailsThirdFragment newInstance(String mealId) {
+        HomeMealDetailsThirdFragment fragment = new HomeMealDetailsThirdFragment();
         Bundle args = new Bundle();
         args.putString("mealId", mealId);
         fragment.setArguments(args);

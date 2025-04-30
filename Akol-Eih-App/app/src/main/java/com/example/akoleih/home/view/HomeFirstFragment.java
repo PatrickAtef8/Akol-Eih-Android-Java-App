@@ -1,4 +1,4 @@
-// MealsFragment.java
+// HomeFragment.java
 package com.example.akoleih.home.view;
 
 import android.os.Bundle;
@@ -11,36 +11,27 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.akoleih.R;
-import com.example.akoleih.home.adapter.MealsAdapter;
+import com.example.akoleih.home.adapter.CategoriesAdapter;
+import com.example.akoleih.home.adapter.RandomMealAdapter;
 import com.example.akoleih.home.contract.HomeContract;
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
-import com.example.akoleih.home.presenter.HomePresenter;
 import com.example.akoleih.home.network.RetrofitClient;
+import com.example.akoleih.home.presenter.HomePresenter;
 import com.example.akoleih.home.model.repository.HomeRepositoryImpl;
 import com.example.akoleih.home.network.api.CategoriesRemoteDataSource;
 import com.example.akoleih.home.network.api.MealRemoteDataSource;
 import java.util.List;
 
-public class MealsFragment extends Fragment implements HomeContract.View, MealsAdapter.OnMealClickListener {
+public class HomeFirstFragment extends Fragment implements HomeContract.View, CategoriesAdapter.OnCategoryClickListener {
     private HomePresenter presenter;
-    private MealsAdapter mealsAdapter;
-    private String category;
-
-    public static MealsFragment newInstance(String category) {
-        MealsFragment fragment = new MealsFragment();
-        Bundle args = new Bundle();
-        args.putString("category", category);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private CategoriesAdapter categoriesAdapter;
+    private RandomMealAdapter randomMealAdapter;
+    private RecyclerView categoriesRecyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            category = getArguments().getString("category");
-        }
 
         CategoriesRemoteDataSource categoriesRemoteDataSource = RetrofitClient.getInstance()
                 .create(CategoriesRemoteDataSource.class);
@@ -53,12 +44,17 @@ public class MealsFragment extends Fragment implements HomeContract.View, MealsA
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meals, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        RecyclerView mealsRecyclerView = view.findViewById(R.id.meals_recycler_view);
-        mealsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mealsAdapter = new MealsAdapter(null, this);
-        mealsRecyclerView.setAdapter(mealsAdapter);
+        categoriesRecyclerView = view.findViewById(R.id.categories_recycler_view);
+        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        categoriesAdapter = new CategoriesAdapter(null, this);
+        categoriesRecyclerView.setAdapter(categoriesAdapter);
+
+        RecyclerView randomMealRecyclerView = view.findViewById(R.id.random_meal_recycler_view);
+        randomMealRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        randomMealAdapter = new RandomMealAdapter();
+        randomMealRecyclerView.setAdapter(randomMealAdapter);
 
         return view;
     }
@@ -66,28 +62,31 @@ public class MealsFragment extends Fragment implements HomeContract.View, MealsA
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getMealsByCategory(category);
+        presenter.getCategories();
+        presenter.getRandomMeal();
     }
 
     @Override
-    public void showMealsByCategory(List<Meal> meals) {
-        mealsAdapter.updateMeals(meals);
+    public void showCategories(List<Category> categories) {
+        categoriesAdapter.updateCategories(categories);
     }
 
     @Override
-    public void onMealClick(Meal meal) {
-        MealDetailsFragment fragment = MealDetailsFragment.newInstance(meal.getIdMeal());
+    public void showRandomMeal(Meal meal) {
+        randomMealAdapter.setMeal(meal);
+    }
+
+    @Override
+    public void onCategoryClick(Category category) {
+        HomeMealsSecondFragment fragment = HomeMealsSecondFragment.newInstance(category.getName());
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
     }
 
-    // Implement other required methods from HomeContract.View
     @Override
-    public void showCategories(List<Category> categories) {}
-    @Override
-    public void showRandomMeal(Meal meal) {}
+    public void showMealsByCategory(List<Meal> meals) {}
     @Override
     public void showMealDetails(Meal meal) {}
     @Override

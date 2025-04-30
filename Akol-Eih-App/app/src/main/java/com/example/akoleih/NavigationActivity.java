@@ -19,7 +19,7 @@ public class NavigationActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
+                    .replace(R.id.fragment_container, new HomeFirstFragment())
                     .commit();
         }
     }
@@ -28,7 +28,7 @@ public class NavigationActivity extends AppCompatActivity {
             item -> {
                 Fragment selectedFragment = null;
 
-                selectedFragment = new HomeFragment();
+                selectedFragment = new HomeFirstFragment();
 
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction()
