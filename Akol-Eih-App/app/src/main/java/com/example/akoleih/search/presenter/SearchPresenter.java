@@ -1,4 +1,8 @@
 package com.example.akoleih.search.presenter;
 
-public class SearchPresenter {
+import com.example.akoleih.search.model.repository.SearchType;
+
+interface SearchPresenter {
+    void search(String query, SearchType type);
+    void onDestroy();
 }
