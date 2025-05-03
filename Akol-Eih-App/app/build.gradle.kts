@@ -87,6 +87,16 @@ dependencies {
     implementation (libs.sdp.android)
     implementation (libs.ssp.android)
 
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation (libs.viewpager2)
+    implementation (libs.constraintlayout.v214)
+
+    implementation (libs.picasso)
+
+    implementation (libs.core)
+
+    implementation (libs.lifecycle.viewmodel.ktx)
+    implementation (libs.lifecycle.viewmodel.savedstate)
+
+    implementation (libs.room.runtime)
+    annotationProcessor (libs.room.compiler)
 }

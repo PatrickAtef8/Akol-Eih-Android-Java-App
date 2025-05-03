@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.akoleih.NavigationActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.view.LoginActivity;
-import com.example.akoleih.splash.contract.SplashContract;
 import com.example.akoleih.splash.presenter.SplashPresenterImpl;
-import com.example.akoleih.splash.presenter.SplashPresenterInterface;
+import com.example.akoleih.splash.presenter.SplashPresenter;
 
 @SuppressLint("CustomSplashScreen")
-public class SplashActivity extends AppCompatActivity implements SplashContract.View {
+public class SplashActivity extends AppCompatActivity implements SplashView {
 
-    private SplashPresenterInterface presenter;
+    private SplashPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

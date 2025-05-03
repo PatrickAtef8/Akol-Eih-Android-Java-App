@@ -31,6 +31,7 @@
         <activity
             android:name=".NavigationActivity"
             android:exported="false" />  <!-- Changed to false since it's not an entry point -->
+        <activity android:name=".search.view.SearchActivity"></activity>
         <activity android:name=".auth.view.SignUpActivity" android:exported="true" />
         <activity android:name=".auth.view.LoginActivity" android:exported="true" />
 

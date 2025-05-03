@@ -1,38 +1,38 @@
 package com.example.akoleih.auth.presenter;
 
-import com.example.akoleih.auth.contract.LoginContract;
 import com.example.akoleih.auth.model.AuthCallback;
 import com.example.akoleih.auth.model.AuthRepository;
+import com.example.akoleih.auth.view.LoginView;
 
 public class LoginPresenterImpl implements LoginPresenter {
 
-    private final LoginContract.View view;
+    private final LoginView loginView;
     private final AuthRepository authRepository;
 
-    public LoginPresenterImpl(LoginContract.View view, AuthRepository authRepository) {
-        this.view = view;
+    public LoginPresenterImpl(LoginView loginView, AuthRepository authRepository) {
+        this.loginView = loginView;
         this.authRepository = authRepository;
     }
 
     @Override
     public void login(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) {
-            view.onLoginError("Email and password must not be empty.");
+            loginView.onLoginError("Email and password must not be empty.");
             return;
         }
 
-        view.showLoading();
+        loginView.showLoading();
         authRepository.login(email, password, new AuthCallback() {
             @Override
             public void onSuccess() {
-                view.hideLoading();
-                view.onLoginSuccess();
+                loginView.hideLoading();
+                loginView.onLoginSuccess();
             }
 
             @Override
             public void onFailure(String message) {
-                view.hideLoading();
-                view.onLoginError(message);
+                loginView.hideLoading();
+                loginView.onLoginError(message);
             }
         });
     }

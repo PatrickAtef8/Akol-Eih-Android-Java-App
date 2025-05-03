@@ -44,8 +44,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         holder.name.setText(category.getName());
         Glide.with(holder.itemView.getContext())
                 .load(category.getThumbnail())
-                .placeholder(R.drawable.foodloading)
-                .error(R.drawable.foodloading)
+                .placeholder(R.drawable.food_placeholder)
+                .error(R.drawable.food_placeholder)
                 .into(holder.image);
 
         holder.itemView.setOnClickListener(v -> listener.onCategoryClick(category));
@@ -58,6 +58,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
+
         TextView name;
 
         public ViewHolder(@NonNull View itemView) {
@@ -67,7 +68,5 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         }
     }
 
-    public interface OnCategoryClickListener {
-        void onCategoryClick(Category category);
-    }
+
 }

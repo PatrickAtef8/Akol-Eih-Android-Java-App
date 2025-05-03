@@ -24,11 +24,11 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/meal_image"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:scaleType="centerCrop"
+            android:layout_height="220dp"
             android:background="@android:color/transparent"
             android:clipToOutline="true"
-            app:shapeAppearance="@style/ImageRoundedCorners"/>
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ImageRoundedCorners" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,20 +41,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:fontFamily="@font/libre_baskerville"
+                android:fontFamily="@font/libre_baskerville_bold"
                 android:text="Meal Name"
                 android:textColor="@color/textPrimary"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/meal_instructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/libre_baskerville_italic"
-                android:text="Meal instructions will appear here..."
-                android:textColor="@color/light_gray"
-                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

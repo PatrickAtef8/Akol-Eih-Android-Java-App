@@ -8,17 +8,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.akoleih.NavigationActivity;
 import com.example.akoleih.R;
-import com.example.akoleih.auth.contract.LoginContract;
 import com.example.akoleih.auth.presenter.LoginPresenter;
 import com.example.akoleih.auth.presenter.LoginPresenterImpl;
 import com.example.akoleih.auth.model.AuthRepositoryImpl;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private EditText emailEditText, passwordEditText;
     private ProgressBar progressBar;

@@ -3,17 +3,17 @@ package com.example.akoleih.auth.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.akoleih.auth.contract.SignUpContract;
 import com.example.akoleih.auth.model.AuthCallback;
 import com.example.akoleih.auth.model.AuthRepository;
+import com.example.akoleih.auth.view.SignUpView;
 
 public class SignUpPresenterImpl implements SignUpPresenter {
     private static final int RC_GOOGLE_SIGN_IN = 123;
-    private final SignUpContract.View view;
+    private final SignUpView view;
     private final AuthRepository authRepository;
 
-    public SignUpPresenterImpl(SignUpContract.View view, AuthRepository authRepository) {
-        this.view = view;
+    public SignUpPresenterImpl(SignUpView signUpView, AuthRepository authRepository) {
+        this.view = signUpView;
         this.authRepository = authRepository;
     }
 

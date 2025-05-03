@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="120dp"
+    android:layout_width="140dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:backgroundTint="@android:color/white"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/light_gray"
     app:cardPreventCornerOverlap="false"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:strokeColor="@color/light_gray"
+    app:strokeWidth="1dp">
 
-    <LinearLayout
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="@android:color/white"
+android:clipChildren="false"
+android:clipToPadding="false"
+android:orientation="vertical"
+android:padding="2dp">
+
+<!-- Larger Image -->
+<com.google.android.material.imageview.ShapeableImageView
+    android:id="@+id/category_image"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+android:background="@android:color/transparent"
+android:clipToOutline="true"
+android:padding="1dp"
+android:scaleType="centerCrop"
+android:src="@drawable/foodloading"
+app:shapeAppearance="@style/ImageRoundedSmallCorners" />
+
+<!-- Category Name -->
+    <TextView
+        android:id="@+id/category_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:padding="12dp"
-        android:clipChildren="false"
-        android:clipToPadding="false">
+        android:layout_marginTop="6dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/libre_baskerville_bold"
+        android:maxLines="2"
+        android:text="Category"
+        android:textAlignment="center"
+        android:textColor="#161E26"
+        android:textSize="15sp" />
 
-        <!-- Rounded Image -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/category_image"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:background="@android:color/transparent"
-            android:clipToOutline="true"
-            android:padding="4dp"
-            android:src="@drawable/foodloading"
-            app:shapeAppearance="@style/ImageRoundedSmallCorners"/>
+</LinearLayout>
 
-        <!-- Category Name -->
-        <TextView
-            android:id="@+id/category_name"
-            android:layout_width="match_parent"
-            android:layout_height="21dp"
-            android:layout_marginTop="12dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/libre_baskerville_bold"
-            android:maxLines="2"
-            android:text="Category"
-            android:textAlignment="center"
-            android:textColor="#161E26"
-            android:textSize="13sp" />
-
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>

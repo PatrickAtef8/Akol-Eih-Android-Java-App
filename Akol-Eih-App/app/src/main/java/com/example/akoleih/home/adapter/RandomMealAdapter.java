@@ -1,6 +1,5 @@
 package com.example.akoleih.home.adapter;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,13 @@ import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Meal;
 
-
 public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.ViewHolder> {
     private Meal meal;
+    private OnRandomMealClickListener listener;
+
+    public RandomMealAdapter(OnRandomMealClickListener listener) {
+        this.listener = listener;
+    }
 
     public void setMeal(Meal meal) {
         this.meal = meal;
@@ -33,12 +36,17 @@ public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (meal != null) {
             holder.name.setText(meal.getName());
-//            holder.instructions.setText(meal.getInstructions());
             Glide.with(holder.itemView.getContext())
                     .load(meal.getThumbnail())
-                    .placeholder(R.drawable.foodloading)
-                    .error(R.drawable.foodloading)
+                    .placeholder(R.drawable.food_placeholder)
+                    .error(R.drawable.food_placeholder)
                     .into(holder.image);
+
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onRandomMealClick(meal);
+                }
+            });
         }
     }
 
@@ -50,13 +58,11 @@ public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name;
-        TextView instructions;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.meal_image);
             name = itemView.findViewById(R.id.meal_name);
-//           instructions = itemView.findViewById(R.id.meal_instructions);
         }
     }
 }

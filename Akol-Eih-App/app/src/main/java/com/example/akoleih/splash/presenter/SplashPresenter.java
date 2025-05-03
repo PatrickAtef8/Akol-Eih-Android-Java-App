@@ -2,6 +2,6 @@ package com.example.akoleih.splash.presenter;
 
 
 
-public interface SplashPresenterInterface {
+public interface SplashPresenter {
     void checkUserSession();
 }

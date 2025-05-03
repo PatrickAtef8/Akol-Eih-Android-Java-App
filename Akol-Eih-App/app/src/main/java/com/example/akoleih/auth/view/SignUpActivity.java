@@ -12,12 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.akoleih.R;
-import com.example.akoleih.auth.contract.SignUpContract;
-import com.example.akoleih.auth.model.AuthRepository;
 import com.example.akoleih.auth.model.AuthRepositoryImpl;
 import com.example.akoleih.auth.presenter.SignUpPresenterImpl;
 
-public class SignUpActivity extends AppCompatActivity implements SignUpContract.View {
+public class SignUpActivity extends AppCompatActivity implements SignUpView {
     private static final int RC_GOOGLE_SIGN_IN = 123;
 
     private EditText emailEditText, passwordEditText;

@@ -103,7 +103,7 @@
                         app:chipBackgroundColor="@color/chip_background" />
                 </com.google.android.material.chip.ChipGroup>
 
-                <!-- Ingredients -->
+                <!-- Ingredients Header -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -113,6 +113,19 @@
                     android:textColor="#161E26"
                     android:textSize="20sp" />
 
+                <!-- Ingredients Horizontal RecyclerView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ingredients_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingEnd="8dp"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"/>
+
+                <!-- Ingredients Text (kept for backward compatibility) -->
                 <TextView
                     android:id="@+id/meal_ingredients"
                     android:layout_width="match_parent"
@@ -121,7 +134,8 @@
                     android:fontFamily="@font/libre_baskerville_italic"
                     android:text="Ingredients list..."
                     android:textColor="@color/secondary_text"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone"/> <!-- Hidden since we're using RecyclerView -->
 
                 <!-- Instructions -->
                 <TextView
@@ -145,6 +159,7 @@
 
                 <!-- Watch Video Button -->
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/watch"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

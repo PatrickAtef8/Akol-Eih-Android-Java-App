@@ -2,18 +2,18 @@ package com.example.akoleih.splash.presenter;
 
 import androidx.annotation.NonNull;
 
-import com.example.akoleih.splash.contract.SplashContract;
+import com.example.akoleih.splash.view.SplashView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /////////*************donttttt forgeetttttttt to make repoooo for this  **********************////////////
-public class SplashPresenterImpl implements SplashPresenterInterface{
-    private final SplashContract.View view;
+public class SplashPresenterImpl implements SplashPresenter {
+    private final SplashView splashView;
 
-    public SplashPresenterImpl(SplashContract.View view) {
-        this.view = view;
+    public SplashPresenterImpl(SplashView view) {
+        this.splashView = view;
     }
 
     @Override
@@ -27,19 +27,19 @@ public class SplashPresenterImpl implements SplashPresenterInterface{
                     if (task.isSuccessful()) {
                         FirebaseUser refreshedUser = FirebaseAuth.getInstance().getCurrentUser();
                         if (refreshedUser != null) {
-                            view.navigateToHome();
+                            splashView.navigateToHome();
                         } else {
                             FirebaseAuth.getInstance().signOut();
-                            view.navigateToLogin();
+                            splashView.navigateToLogin();
                         }
                     } else {
                         FirebaseAuth.getInstance().signOut();
-                        view.navigateToLogin();
+                        splashView.navigateToLogin();
                     }
                 }
             });
         } else {
-            view.navigateToLogin();
+            splashView.navigateToLogin();
         }
     }
         }
