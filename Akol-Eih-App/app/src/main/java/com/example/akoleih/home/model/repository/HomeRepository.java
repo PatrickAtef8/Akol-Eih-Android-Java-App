@@ -1,18 +1,16 @@
-package com.example.akoleih.home.model.repository;
 
-import androidx.lifecycle.LiveData;
+// HomeRepository.java
+package com.example.akoleih.home.model.repository;
 
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
+import com.example.akoleih.home.network.api.DataSourceCallback;
+
 import java.util.List;
 
 public interface HomeRepository {
-    LiveData<List<Category>> getCategories();
-    LiveData<Meal> getRandomMeal();
-
-    LiveData<List<Meal>> getMealsByCategory(String category);
-
-    LiveData<Meal> getMealDetails(String mealId);
-
-    LiveData<String> getError();
+    void getCategories(DataSourceCallback<List<Category>> callback);
+    void getRandomMeal(DataSourceCallback<Meal> callback);
+    void getMealsByCategory(String category, DataSourceCallback<List<Meal>> callback);
+    void getMealDetails(String mealId, DataSourceCallback<Meal> callback);
 }

@@ -1,121 +1,90 @@
-// HomeRepositoryImpl.java
 package com.example.akoleih.home.model.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
-import com.example.akoleih.home.network.api.CategoriesRemoteDataSource;
+import com.example.akoleih.home.network.api.CategoryRemoteDataSource;
+import com.example.akoleih.home.network.api.DataSourceCallback;
 import com.example.akoleih.home.network.api.MealRemoteDataSource;
 import com.example.akoleih.home.network.model.CategoriesResponse;
 import com.example.akoleih.home.network.model.MealResponse;
+
 import java.util.ArrayList;
 import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeRepositoryImpl implements HomeRepository {
-    private final CategoriesRemoteDataSource categoriesRemoteDataSource;
-    private final MealRemoteDataSource mealRemoteDataSource;
-    private final MutableLiveData<List<Category>> categoriesLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Meal> randomMealLiveData = new MutableLiveData<>();
-    private final MutableLiveData<List<Meal>> mealsByCategoryLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Meal> mealDetailsLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    private final CategoryRemoteDataSource categoryDS;
+    private final MealRemoteDataSource mealDS;
 
-    public HomeRepositoryImpl(CategoriesRemoteDataSource categoriesRemoteDataSource,
-                              MealRemoteDataSource mealRemoteDataSource) {
-        this.categoriesRemoteDataSource = categoriesRemoteDataSource;
-        this.mealRemoteDataSource = mealRemoteDataSource;
+    public HomeRepositoryImpl(CategoryRemoteDataSource categoryDS,
+                              MealRemoteDataSource mealDS) {
+        this.categoryDS = categoryDS;
+        this.mealDS = mealDS;
     }
 
     @Override
-    public LiveData<List<Category>> getCategories() {
-        categoriesRemoteDataSource.getCategories().enqueue(new Callback<CategoriesResponse>() {
+    public void getCategories(DataSourceCallback<List<Category>> callback) {
+        categoryDS.fetchCategories(new DataSourceCallback<CategoriesResponse>() {
             @Override
-            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
-                if (response.isSuccessful() && response.body() != null && response.body().getCategories() != null) {
-                    categoriesLiveData.setValue(response.body().getCategories());
-                } else {
-                    categoriesLiveData.setValue(new ArrayList<>());
-                    errorLiveData.setValue("No categories found");
-                }
+            public void onSuccess(CategoriesResponse response) {
+                List<Category> cats = response.getCategories() != null
+                        ? response.getCategories() : new ArrayList<>();
+                callback.onSuccess(cats);
             }
-
             @Override
-            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
-                categoriesLiveData.setValue(new ArrayList<>());
-                errorLiveData.setValue(t.getMessage());
+            public void onError(String message) {
+                callback.onError(message);
             }
         });
-        return categoriesLiveData;
     }
 
     @Override
-    public LiveData<Meal> getRandomMeal() {
-        mealRemoteDataSource.getRandomMeal().enqueue(new Callback<MealResponse>() {
+    public void getRandomMeal(DataSourceCallback<Meal> callback) {
+        mealDS.fetchRandomMeal(new DataSourceCallback<MealResponse>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().getMeals().isEmpty()) {
-                    randomMealLiveData.setValue(response.body().getMeals().get(0));
+            public void onSuccess(MealResponse response) {
+                if (response.getMeals() != null && !response.getMeals().isEmpty()) {
+                    callback.onSuccess(response.getMeals().get(0));
                 } else {
-                    errorLiveData.setValue("Failed to load random meal");
+                    callback.onError("No random meal found");
                 }
             }
-
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                errorLiveData.setValue(t.getMessage());
+            public void onError(String message) {
+                callback.onError(message);
             }
         });
-        return randomMealLiveData;
     }
 
     @Override
-    public LiveData<List<Meal>> getMealsByCategory(String category) {
-        mealRemoteDataSource.getMealsByCategory(category).enqueue(new Callback<MealResponse>() {
+    public void getMealsByCategory(String category, DataSourceCallback<List<Meal>> callback) {
+        mealDS.fetchMealsByCategory(category, new DataSourceCallback<MealResponse>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    mealsByCategoryLiveData.setValue(response.body().getMeals());
+            public void onSuccess(MealResponse response) {
+                callback.onSuccess(response.getMeals() != null
+                        ? response.getMeals() : new ArrayList<>());
+            }
+            @Override
+            public void onError(String message) {
+                callback.onError(message);
+            }
+        });
+    }
+
+    @Override
+    public void getMealDetails(String mealId, DataSourceCallback<Meal> callback) {
+        mealDS.fetchMealDetails(mealId, new DataSourceCallback<MealResponse>() {
+            @Override
+            public void onSuccess(MealResponse response) {
+                if (response.getMeals() != null && !response.getMeals().isEmpty()) {
+                    callback.onSuccess(response.getMeals().get(0));
                 } else {
-                    mealsByCategoryLiveData.setValue(new ArrayList<>());
-                    errorLiveData.setValue("No meals found for this category");
+                    callback.onError("Meal details not found");
                 }
             }
-
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                mealsByCategoryLiveData.setValue(new ArrayList<>());
-                errorLiveData.setValue(t.getMessage());
+            public void onError(String message) {
+                callback.onError(message);
             }
         });
-        return mealsByCategoryLiveData;
-    }
-
-    @Override
-    public LiveData<Meal> getMealDetails(String mealId) {
-        mealRemoteDataSource.getMealDetails(mealId).enqueue(new Callback<MealResponse>() {
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().getMeals().isEmpty()) {
-                    mealDetailsLiveData.setValue(response.body().getMeals().get(0));
-                } else {
-                    errorLiveData.setValue("Meal details not found");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
-                errorLiveData.setValue(t.getMessage());
-            }
-        });
-        return mealDetailsLiveData;
-    }
-
-    @Override
-    public LiveData<String> getError() {
-        return errorLiveData;
     }
 }
