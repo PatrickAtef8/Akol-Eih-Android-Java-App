@@ -147,6 +147,7 @@
 
     <!-- Results Container with Empty State -->
     <FrameLayout
+        android:id="@+id/results_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -188,4 +189,16 @@
                 android:fontFamily="@font/libre_baskerville"/>
         </LinearLayout>
     </FrameLayout>
+
+    <!-- Fragment host for meal details (overlay) -->
+    <FrameLayout
+        android:id="@+id/search_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/results_container"
+        app:layout_constraintBottom_toBottomOf="@id/results_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

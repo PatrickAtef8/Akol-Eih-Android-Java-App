@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Category;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +44,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.name.setText(category.getName());
-        Glide.with(holder.itemView.getContext())
+        Picasso.get()
                 .load(category.getThumbnail())
-                .placeholder(R.drawable.food_placeholder)
-                .error(R.drawable.food_placeholder)
+                .placeholder(R.drawable.foodloading)
+                .error(R.drawable.foodloading)
                 .into(holder.image);
-
         holder.itemView.setOnClickListener(v -> listener.onCategoryClick(category));
     }
 

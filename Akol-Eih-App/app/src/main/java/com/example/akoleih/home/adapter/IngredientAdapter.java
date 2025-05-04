@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Ingredient;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
 
-        Glide.with(holder.itemView.getContext())
+        Picasso.get()
                 .load(ingredient.getThumbnail())
                 .placeholder(R.drawable.foodloading)
                 .error(R.drawable.foodloading)

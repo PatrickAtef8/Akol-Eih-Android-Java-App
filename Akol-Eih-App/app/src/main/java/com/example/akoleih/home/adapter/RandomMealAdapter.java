@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Meal;
+import com.squareup.picasso.Picasso;
 
 public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.ViewHolder> {
     private Meal meal;
@@ -36,12 +37,11 @@ public class RandomMealAdapter extends RecyclerView.Adapter<RandomMealAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (meal != null) {
             holder.name.setText(meal.getName());
-            Glide.with(holder.itemView.getContext())
+            Picasso.get()
                     .load(meal.getThumbnail())
-                    .placeholder(R.drawable.food_placeholder)
-                    .error(R.drawable.food_placeholder)
+                    .placeholder(R.drawable.foodloading)
+                    .error(R.drawable.foodloading)
                     .into(holder.image);
-
             holder.itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onRandomMealClick(meal);

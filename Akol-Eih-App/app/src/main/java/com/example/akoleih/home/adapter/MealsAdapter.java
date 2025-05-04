@@ -9,19 +9,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
 import com.example.akoleih.R;
 import com.example.akoleih.home.model.Meal;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> {
-    private List<Meal> meals;
-    private OnMealClickListener listener;
+    public interface OnMealClickListener { void onMealClick(Meal meal); }
+    public interface OnFavClickListener { void onFavClick(Meal meal); }
 
-    public MealsAdapter(List<Meal> meals, OnMealClickListener listener) {
+    private List<Meal> meals;
+    private final OnMealClickListener mealListener;
+    private final OnFavClickListener favListener;
+    private Set<String> favoriteIds = new HashSet<>();
+
+    public MealsAdapter(List<Meal> meals,
+                        OnMealClickListener mealListener,
+                        OnFavClickListener favListener) {
         this.meals = meals != null ? meals : new ArrayList<>();
-        this.listener = listener;
+        this.mealListener = mealListener;
+        this.favListener = favListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -30,26 +41,46 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    /**
+     * Update the set of favorite IDs and refresh icons
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    public void setFavoriteIds(Set<String> favoriteIds) {
+        this.favoriteIds = favoriteIds != null
+                ? new HashSet<>(favoriteIds)
+                : new HashSet<>();
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_meal, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Meal meal = meals.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos) {
+        Meal meal = meals.get(pos);
         holder.name.setText(meal.getName());
-        Glide.with(holder.itemView.getContext())
+        Picasso.get()
                 .load(meal.getThumbnail())
-                .placeholder(R.drawable.food_placeholder)
-                .error(R.drawable.food_placeholder)
+                .placeholder(R.drawable.foodloading)
+                .error(R.drawable.foodloading)
                 .into(holder.image);
 
-        holder.itemView.setOnClickListener(v
-                -> listener.onMealClick(meal));
+        // Regular item click (navigate to details)
+        holder.itemView.setOnClickListener(v -> mealListener.onMealClick(meal));
+
+        // Favorite icon toggle
+        boolean isFav = favoriteIds.contains(meal.getIdMeal());
+        holder.favIcon.setImageResource(
+                isFav
+                        ? R.drawable.remove
+                        : R.drawable.wishlist
+        );
+        holder.favIcon.setOnClickListener(v -> favListener.onFavClick(meal));
     }
 
     @Override
@@ -57,16 +88,16 @@ public class MealsAdapter extends RecyclerView.Adapter<MealsAdapter.ViewHolder> 
         return meals.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView name;
+        ImageView favIcon;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            image = itemView.findViewById(R.id.meal_image);
-            name = itemView.findViewById(R.id.meal_name);
+            image   = itemView.findViewById(R.id.meal_image);
+            name    = itemView.findViewById(R.id.meal_name);
+            favIcon = itemView.findViewById(R.id.iv_favorite);
         }
     }
-
-
 }

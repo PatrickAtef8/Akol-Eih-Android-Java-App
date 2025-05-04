@@ -28,7 +28,7 @@
             android:layout_marginBottom="8dp"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/food_placeholder"
+            android:src="@drawable/foodloading"
             app:shapeAppearance="@style/ImageRoundedSmallCorners" />  <!-- Margin below image -->
 
         <!-- Ingredient Name -->

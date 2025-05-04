@@ -50,11 +50,6 @@ public class Meal {
     }
 
 
-    // Add getters
-    public String getStrMeal() { return strMeal; }
-    public String getStrMealThumb() { return strMealThumb; }
-
-
 
     public String getIngredients() {
         StringBuilder ingredients = new StringBuilder();

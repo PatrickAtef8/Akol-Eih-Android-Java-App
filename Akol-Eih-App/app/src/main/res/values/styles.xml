@@ -21,6 +21,15 @@
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
+    <style name="AppSnackbar" parent="@style/Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_margin">16dp</item>
+        <item name="backgroundTint">@color/snackbar_background</item>
+        <item name="android:textColor">@color/snackbar_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+
     <style name="TopRoundedImageCornersdetails" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>

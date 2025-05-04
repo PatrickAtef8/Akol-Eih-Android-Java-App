@@ -1,4 +1,5 @@
-package com.example.akoleih.favorite.repository;
+// FavoriteRepositoryImpl.java
+package com.example.akoleih.favorite.model.repository;
 
 import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
@@ -17,6 +18,11 @@ public class FavoriteRepositoryImpl implements FavoriteRepository {
     @Override
     public LiveData<List<FavoriteMeal>> getFavorites() {
         return dao.getAllFavorites();
+    }
+
+    @Override
+    public LiveData<FavoriteMeal> getFavoriteById(String id) {
+        return dao.getFavoriteById(id);
     }
 
     @Override
