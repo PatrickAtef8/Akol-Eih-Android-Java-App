@@ -139,7 +139,6 @@ public class FavoritesFragment extends Fragment implements FavoriteView {
             snackbar.dismiss();
         });
     }
-
     private void addSnackbarAnimations(Snackbar snackbar) {
         @SuppressLint("RestrictedApi")
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
