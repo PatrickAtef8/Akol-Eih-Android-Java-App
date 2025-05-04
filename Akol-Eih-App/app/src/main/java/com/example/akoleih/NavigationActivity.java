@@ -10,6 +10,7 @@ import com.example.akoleih.favorite.view.FavoritesFragment;
 import com.example.akoleih.home.view.HomeFirstFragment;
 import com.example.akoleih.home.view.HomeMealsSecondFragment;
 import com.example.akoleih.home.view.HomeMealDetailsThirdFragment;
+import com.example.akoleih.profile.view.ProfileActivity;
 import com.example.akoleih.search.view.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -120,7 +121,11 @@ public class NavigationActivity extends AppCompatActivity {
                             .commit();
                     currentSelectedItem = R.id.nav_favorites;
 
-                } else {
+                }
+                    else if (itemId == R.id.nav_profile) {
+                    startActivity(new Intent(NavigationActivity.this, ProfileActivity.class));
+                    return true;
+                    } else {
                     return false;
                 }
 
