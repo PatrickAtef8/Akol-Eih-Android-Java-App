@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import com.example.akoleih.favorite.model.FavoriteMeal;
-import com.example.akoleih.favorite.repository.FavoriteRepository;
+import com.example.akoleih.favorite.model.repository.FavoriteRepository;
 import java.util.List;
 
 public class FavoritePresenterImpl implements FavoritePresenter {
