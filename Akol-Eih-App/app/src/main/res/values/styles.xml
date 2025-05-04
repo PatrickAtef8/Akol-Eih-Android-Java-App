@@ -56,5 +56,24 @@
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
+    <!-- res/values/themes.xml -->
+    <style name="Theme.MyApp.Dialog.Alert"
+        parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <!-- 100% white surface -->
+        <item name="android:colorBackgroundFloating">@color/white</item>
+        <!-- shared rounded-28dp shape -->
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.Rounded28dp</item>
+        <!-- default on-surface text -->
+        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+        <!-- use Material3 TextButton style -->
+        <item name="buttonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    </style>
+
+    <style name="ShapeAppearance.MyApp.Rounded28dp"
+        parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">28dp</item>
+    </style>
+
+
 
 </resources>

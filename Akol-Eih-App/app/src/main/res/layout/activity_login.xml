@@ -1,114 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollViewLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:fillViewport="true"
     android:background="@drawable/splashwhite"
-    android:gravity="center"
+    android:padding="24dp"
     tools:ignore="ExtraText">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome Back"
-        android:textSize="24sp"
-        android:textColor="#161E26"
-        android:textStyle="bold"
-        android:fontFamily="@font/libre_baskerville"
-        android:layout_marginBottom="32dp" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="#161E26"
-        app:hintTextColor="#B3161E26"
-        app:boxBackgroundColor="@color/white">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/libre_baskerville"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textColor="#161E26"
-            android:textColorHint="#B3161E26"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="#161E26"
-        app:hintTextColor="#B3161E26"
-        app:boxBackgroundColor="@color/white"
-        app:endIconMode="password_toggle"
-        app:endIconTint="#161E26">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/libre_baskerville"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="#161E26"
-            android:textColorHint="#B3161E26"
-            android:textSize="14sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="16dp"
-        android:text="Login"
-        android:fontFamily="@font/libre_baskerville"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="#4CAF50"
-        app:cornerRadius="8dp" />
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:indicatorColor="#161E26" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:gravity="center">
 
+        <!-- Your existing views: -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't have an account?"
-            android:fontFamily="@font/libre_baskerville"
-            android:textColor="#B3161E26"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/btnSignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign up"
-            android:fontFamily="@font/libre_baskerville_bold"
+            android:text="Welcome Back"
+            android:textSize="24sp"
             android:textColor="#161E26"
-            android:textSize="14sp"
             android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginStart="4dp" />
+            android:fontFamily="@font/libre_baskerville"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Email field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#161E26"
+            app:hintTextColor="#B3161E26"
+            app:boxBackgroundColor="@color/white"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/libre_baskerville"
+                android:textColor="#161E26"
+                android:textColorHint="#B3161E26"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#161E26"
+            app:hintTextColor="#B3161E26"
+            app:boxBackgroundColor="@color/white"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#161E26"
+            android:layout_marginBottom="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:fontFamily="@font/libre_baskerville"
+                android:textColor="#161E26"
+                android:textColorHint="#B3161E26"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Login button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Login"
+            android:fontFamily="@font/libre_baskerville"
+            app:backgroundTint="@color/teal_700"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Progress indicator -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:indicatorColor="#161E26"
+            android:visibility="gone"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Sign-up prompt -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:fontFamily="@font/libre_baskerville"
+                android:textColor="#B3161E26"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/btnSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:fontFamily="@font/libre_baskerville_bold"
+                android:textColor="#161E26"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

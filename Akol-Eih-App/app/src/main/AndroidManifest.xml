@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,9 +17,12 @@
         android:theme="@style/Theme.AkolEih"
         tools:targetApi="31">
 
+        <!-- Google Play Services version meta-data -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <!-- Launcher / Splash -->
         <activity
             android:name=".splash.view.SplashActivity"
             android:exported="true">
@@ -27,13 +32,32 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity should NOT have launcher intent filter -->
+        <!-- Main / Navigation (not a launcher) -->
         <activity
             android:name=".NavigationActivity"
-            android:exported="false" />  <!-- Changed to false since it's not an entry point -->
-        <activity android:name=".search.view.SearchActivity"></activity>
-        <activity android:name=".auth.view.SignUpActivity" android:exported="true" />
-        <activity android:name=".auth.view.LoginActivity" android:exported="true" />
+            android:exported="false" />
+
+        <!-- Search -->
+        <activity
+            android:name=".search.view.SearchActivity"
+            android:exported="false" />
+
+        <!-- Auth: Sign-Up -->
+        <activity
+            android:name=".auth.view.SignUpActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Auth: Login -->
+        <activity
+            android:name=".auth.view.LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Profile -->
+        <activity
+            android:name="com.example.akoleih.profile.view.ProfileActivity"
+            android:exported="false" />
 
     </application>
 </manifest>

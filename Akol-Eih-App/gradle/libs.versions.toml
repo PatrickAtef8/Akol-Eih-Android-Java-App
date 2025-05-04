@@ -25,6 +25,7 @@ sspAndroid = "1.1.0"
 
 roomRuntime = "2.7.0"
 viewpager2 = "1.1.0"
+firebaseStorage = "21.0.1"
 
 [libraries]
 cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
@@ -62,6 +63,7 @@ glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "gl
 sdp-android = { module = "com.intuit.sdp:sdp-android", version.ref = "sdpAndroid" }
 ssp-android = { module = "com.intuit.ssp:ssp-android", version.ref = "sspAndroid" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
