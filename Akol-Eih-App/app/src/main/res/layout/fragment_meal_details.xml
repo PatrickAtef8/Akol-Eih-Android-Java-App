@@ -26,6 +26,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:shapeAppearance="@style/TopRoundedImageCorners" />
 
+        <!-- Favorite Icon -->
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_favorite_outline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <!-- Content Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
@@ -135,7 +145,7 @@
                     android:text="Ingredients list..."
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
-                    android:visibility="gone"/> <!-- Hidden since we're using RecyclerView -->
+                    android:visibility="gone"/>
 
                 <!-- Instructions -->
                 <TextView

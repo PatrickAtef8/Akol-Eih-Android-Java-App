@@ -28,6 +28,7 @@
             android:background="@android:color/transparent"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
+            android:src="@drawable/foodloading"
             app:shapeAppearance="@style/ImageRoundedCorners" />
 
         <LinearLayout
