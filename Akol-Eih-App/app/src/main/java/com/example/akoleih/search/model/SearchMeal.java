@@ -11,8 +11,41 @@ public class SearchMeal {
         this.thumbnail = thumbnail;
     }
 
+    // Setters
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     // Getters
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getThumbnail() { return thumbnail; }
+
+    /**
+     * Returns the meal’s unique ID.
+     * Used by the details fragment to fetch full meal info.
+     */
+    public String getIdMeal() {
+        return id;
+    }
+
+    /**
+     * Legacy getter for ID if needed elsewhere.
+     */
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
 }
