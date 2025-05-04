@@ -139,6 +139,7 @@ public class FavoritesFragment extends Fragment implements FavoriteView {
             snackbar.dismiss();
         });
     }
+
     private void addSnackbarAnimations(Snackbar snackbar) {
         @SuppressLint("RestrictedApi")
         Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
@@ -152,7 +153,8 @@ public class FavoritesFragment extends Fragment implements FavoriteView {
                 Animation slideOut = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_left);
                 layout.startAnimation(slideOut);
 
-                if (event != DISMISS_EVENT_ACTION) {
+                // only delete if the Snackbar timed out or was swiped away
+                if (event == DISMISS_EVENT_TIMEOUT || event == DISMISS_EVENT_SWIPE) {
                     presenter.deleteFavorite(meal);
                     checkEmptyState();
                 }
