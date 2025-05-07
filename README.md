@@ -84,55 +84,331 @@ flowchart TD
 Allows users to plan meals on a weekly calendar, persist data in Room and sync with Firebase.
 
 ```mermaid
-flowchart TD
-    CalendarFragment --> CalendarPresenter
-    CalendarPresenter --> CalendarRepository
-    CalendarRepository --> CalendarMealDao
-    CalendarRepository --> FirebaseService
-    CalendarMealDao --> RoomDB
-    FirebaseService --> FirestoreCollection
-    DataCallback --> CalendarFragment
+classDiagram
+    class CalendarView {
+        +showCalendarMeals(meals: List~CalendarMeal~)
+        +showPlannedDates(dates: Set~Long~)
+        +showMealThumbnail(date: Long, thumbnailUrl: String)
+        +showError(message: String)
+        +refreshCalendar()
+        +showUndoSnackbar()
+        +restoreMeal(meal: CalendarMeal, position: Int)
+    }
+
+    class CalendarFragment {
+        -calendarView: MaterialCalendarView
+        -mealsRecycler: RecyclerView
+        -adapter: CalendarAdapter
+        -presenter: CalendarPresenter
+        -plannedDates: Set~CalendarDay~
+        -mealThumbnails: Map~CalendarDay, String~
+        -mealCounts: Map~CalendarDay, Integer~
+        +onCreateView()
+        +onViewCreated()
+        +showCalendarMeals()
+        +showPlannedDates()
+        +showMealThumbnail()
+        +showError()
+        +refreshCalendar()
+        +showUndoSnackbar()
+        +restoreMeal()
+    }
+
+    class CalendarPresenter {
+        +attachView(view: CalendarView, fragment: Fragment)
+        +detachView()
+        +loadMealsForDate(millis: Long)
+        +loadPlannedDates()
+        +loadMealThumbnailForDate(millis: Long)
+        +getMealCountForDate(millis: Long): LiveData~Integer~
+        +onMealDeleteRequested(meal: CalendarMeal, position: Int)
+        +onUndoRequested()
+        +onDeleteConfirmed()
+    }
+
+    class CalendarPresenterImpl {
+        -repository: CalendarRepository
+        -view: CalendarView
+        +attachView()
+        +detachView()
+        +loadMealsForDate()
+        +loadPlannedDates()
+        +loadMealThumbnailForDate()
+        +getMealCountForDate()
+        +onMealDeleteRequested()
+        +onUndoRequested()
+        +onDeleteConfirmed()
+    }
+
+    class CalendarRepository {
+        +loadMeals(date: Long): List~CalendarMeal~
+        +loadPlannedDates(): Set~Long~
+        +getMealCountForDate(date: Long): LiveData~Integer~
+        +loadMealThumbnail(date: Long): String
+        +addMeal(meal: CalendarMeal)
+        +deleteMeal(meal: CalendarMeal)
+    }
+
+    class CalendarRepositoryImpl {
+        -context: Context
+        -firebaseService: FirebaseService
+        -roomDatabase: RoomDatabase
+        +loadMeals()
+        +loadPlannedDates()
+        +getMealCountForDate()
+        +loadMealThumbnail()
+        +addMeal()
+        +deleteMeal()
+    }
+
+    class FirebaseService {
+        +syncMeal(meal: CalendarMeal)
+        +deleteMeal(meal: CalendarMeal)
+        +fetchPlannedDates(): Set~Long~
+    }
+
+    class FirebaseServiceImpl {
+        -firestore: Firestore
+        +syncMeal()
+        +deleteMeal()
+        +fetchPlannedDates()
+    }
+
+    class CalendarMeal {
+        -mealId: String
+        -mealName: String
+        -mealThumb: String
+        -date: Long
+        +getMealId(): String
+        +setMealId(id: String)
+        +getMealName(): String
+        +setMealName(name: String)
+        +getMealThumb(): String
+        +setMealThumb(thumb: String)
+        +getDate(): Long
+        +setDate(date: Long)
+    }
+
+    CalendarFragment ..|> CalendarView : implements
+    CalendarFragment --> CalendarPresenter : uses
+    CalendarFragment --> CalendarAdapter : uses
+    CalendarFragment --> CalendarDecorators : uses
+
+    CalendarPresenterImpl ..|> CalendarPresenter : implements
+    CalendarPresenterImpl --> CalendarRepository : uses
+    CalendarPresenterImpl --> CalendarView : updates
+
+    CalendarRepositoryImpl ..|> CalendarRepository : implements
+    CalendarRepositoryImpl --> FirebaseService : uses
+    CalendarRepositoryImpl --> RoomDatabase : uses
+    CalendarRepositoryImpl --> CalendarMeal : manages
+
+    FirebaseServiceImpl ..|> FirebaseService : implements
+    FirebaseServiceImpl --> Firestore : uses
+
+    CalendarAdapter --> CalendarMeal : displays
+    CalendarDecorators --> CalendarMeal : decorates
 ```
-
-* **Model** (`com.example.akoleih.calendar.model`)
-
-  * Room: `CalendarMeal.java`, `CalendarMealDao.java`
-  * Repositories: `CalendarRepository` / `CalendarRepositoryImpl.java`
-  * Firebase: `FirebaseService` / `FirebaseServiceImpl.java`
-* **Presenter** (`com.example.akoleih.calendar.presenter`)
-
-  * `CalendarPresenter.java` / `CalendarPresenterImpl.java`
-* **View** (`com.example.akoleih.calendar.view`)
-
-  * `CalendarFragment.java`, `CalendarAdapter.java`, `CalendarView.java`
-  * Decorators: `CalendarDecorators.java`
 
 ### Favorites Module
 
 Manages offline and online (Firestore) favorites with sync capabilities.
 
 ```mermaid
-flowchart TD
-    FavoritesFragment --> FavoritePresenter
-    FavoritePresenter --> FavoriteRepository
-    FavoriteRepository --> FavoriteMealDao
-    FavoriteRepository --> FirestoreFavoriteRepository
-    FavoriteRepository --> SyncFavoriteRepository
-    DataCallback --> FavoritesFragment
+classDiagram
+    class FavoriteView {
+        +showFavorites(favorites: List~FavoriteMeal~)
+        +showEmpty()
+        +showError(message: String)
+        +onFavoriteRemoved(position: int)
+        +onFavoriteRestored(meal: FavoriteMeal, position: int)
+        +showUndoSnackbar()
+    }
+
+    class FavoritesFragment {
+        -presenter: FavoritePresenter
+        -adapter: FavoriteAdapter
+        -rvFavorites: RecyclerView
+        -emptyStateView: View
+        +onCreateView()
+        +onViewCreated()
+        +showFavorites()
+        +showEmpty()
+        +showError()
+        +onFavoriteRemoved()
+        +onFavoriteRestored()
+        +showUndoSnackbar()
+        +onMealClick(meal: FavoriteMeal)
+        +onDestroyView()
+    }
+
+    class FavoritePresenter {
+        +attachView(view: FavoriteView, lifecycleOwner: LifecycleOwner)
+        +detachView()
+        +loadFavorites()
+        +addFavorite(meal: FavoriteMeal)
+        +deleteFavorite(meal: FavoriteMeal, position: int)
+        +undoDelete()
+        +getFavoritesLiveData(): LiveData~List~FavoriteMeal~~
+    }
+
+    class FavoritePresenterImpl {
+        -view: FavoriteView
+        -lifecycleOwner: LifecycleOwner
+        -repo: FavoriteRepository
+        -favoritesLiveData: LiveData~List~FavoriteMeal~~
+        -removedMeal: FavoriteMeal
+        -lastRemovedPosition: int
+        +attachView()
+        +detachView()
+        +loadFavorites()
+        +addFavorite()
+        +deleteFavorite()
+        +undoDelete()
+        +getFavoritesLiveData()
+    }
+
+    class FavoriteRepository {
+        +getFavorites(): LiveData~List~FavoriteMeal~~
+        +getFavoriteById(id: String): LiveData~FavoriteMeal~
+        +addFavorite(meal: FavoriteMeal)
+        +removeFavorite(meal: FavoriteMeal)
+        +syncFavoritesFromFirestore(callback: DataCallback~Void~)
+        +syncFavoritesOnStartup(context: Context)
+        +clearFavoriteData()
+    }
+
+    class SyncFavoriteRepositoryImpl {
+        -dao: FavoriteMealDao
+        -firestoreRepo: FirestoreFavoriteRepositoryImpl
+        -executor: ExecutorService
+        -mainHandler: Handler
+        +getFavorites()
+        +getFavoriteById()
+        +addFavorite()
+        +removeFavorite()
+        +syncFavoritesFromFirestore()
+        +syncFavoritesOnStartup()
+        +clearFavoriteData()
+    }
+
+    class FirestoreFavoriteRepositoryImpl {
+        -db: FirebaseFirestore
+        -auth: FirebaseAuth
+        -favoritesLiveData: MutableLiveData~List~FavoriteMeal~~
+        -listener: ListenerRegistration
+        +getFavorites()
+        +getFavoriteById()
+        +addFavorite()
+        +removeFavorite()
+        +clearFavoriteData()
+        +cleanup()
+    }
+
+    class FavoriteRepositoryImpl {
+        -dao: FavoriteMealDao
+        +getFavorites()
+        +getFavoriteById()
+        +addFavorite()
+        +removeFavorite()
+        +syncFavoritesFromFirestore()
+        +syncFavoritesOnStartup()
+        +clearFavoriteData()
+    }
+
+    class FavoriteMealDao {
+        +insert(meal: FavoriteMeal)
+        +insertAll(meals: List~FavoriteMeal~)
+        +delete(meal: FavoriteMeal)
+        +deleteAll()
+        +getAllFavorites(): LiveData~List~FavoriteMeal~~
+        +getFavoriteById(id: String): LiveData~FavoriteMeal~
+    }
+
+    class AppDatabase {
+        -INSTANCE: AppDatabase
+        +favoriteMealDao(): FavoriteMealDao
+        +calendarMealDao(): CalendarMealDao
+        +getInstance(context: Context): AppDatabase
+        +clearInstance()
+    }
+
+    class FavoriteMeal {
+        -idMeal: String
+        -strMeal: String
+        -strMealThumb: String
+        +getIdMeal(): String
+        +setIdMeal(id: String)
+        +getStrMeal(): String
+        +setStrMeal(name: String)
+        +getStrMealThumb(): String
+        +setStrMealThumb(thumb: String)
+    }
+
+    class FavoriteAdapter {
+        -data: ArrayList~FavoriteMeal~
+        -deleteListener: OnFavDeleteClickListener
+        -mealListener: OnMealClickListener
+        +setData(newData: List~FavoriteMeal~)
+        +removeItem(position: int)
+        +restoreItem(meal: FavoriteMeal, position: int)
+        +setMealClickListener(listener: OnMealClickListener)
+    }
+
+    class OnMealClickListener {
+        +onMealClick(meal: FavoriteMeal)
+    }
+
+    class Resource {
+        +Success~T~: data
+        +Error~T~: message
+    }
+
+    class SnackbarUtil {
+        +showError(root: View, message: String)
+        +showUndoSnackbar(root: View, onUndo: Runnable, iconRes: int, textRes: int, actionTextRes: int): Snackbar
+    }
+
+    class NavigationHandler {
+        +navigateToMealDetails(mealId: String)
+    }
+
+    FavoritesFragment ..|> FavoriteView : implements
+    FavoritesFragment ..|> OnMealClickListener : implements
+    FavoritesFragment --> FavoritePresenter : uses
+    FavoritesFragment --> FavoriteAdapter : uses
+    FavoritesFragment --> HomeMealDetailsThirdFragment : navigates to
+    FavoritesFragment --> SnackbarUtil : uses (optional)
+    FavoritesFragment ..> NavigationHandler : implements (optional)
+
+    FavoritePresenterImpl ..|> FavoritePresenter : implements
+    FavoritePresenterImpl --> FavoriteRepository : uses
+    FavoritePresenterImpl --> FavoriteView : updates
+    FavoritePresenterImpl --> Resource : uses (optional)
+
+    SyncFavoriteRepositoryImpl ..|> FavoriteRepository : implements
+    SyncFavoriteRepositoryImpl --> FavoriteMealDao : uses
+    SyncFavoriteRepositoryImpl --> FirestoreFavoriteRepositoryImpl : uses
+    SyncFavoriteRepositoryImpl --> FavoriteMeal : manages
+    SyncFavoriteRepositoryImpl --> Resource : uses (optional)
+
+    FirestoreFavoriteRepositoryImpl ..|> FavoriteRepository : implements
+    FirestoreFavoriteRepositoryImpl --> FirebaseFirestore : uses
+    FirestoreFavoriteRepositoryImpl --> FirebaseAuth : uses
+    FirestoreFavoriteRepositoryImpl --> FavoriteMeal : manages
+
+    FavoriteRepositoryImpl ..|> FavoriteRepository : implements
+    FavoriteRepositoryImpl --> FavoriteMealDao : uses
+    FavoriteRepositoryImpl --> FavoriteMeal : manages
+
+    FavoriteMealDao --> FavoriteMeal : manages
+    AppDatabase --> FavoriteMealDao : provides
+    AppDatabase --> Room : uses
+
+    FavoriteAdapter --> FavoriteMeal : displays
+    FavoriteAdapter --> OnMealClickListener : uses
+    FavoriteAdapter --> Glide : uses
 ```
-
-* **Model** (`com.example.akoleih.favorite.model`)
-
-  * Database: `AppDatabase.java`, `FavoriteMealDao.java`, `FavoriteMeal.java`
-  * Repositories: `FavoriteRepository` / `FavoriteRepositoryImpl.java`
-  * Online: `FirestoreFavoriteRepositoryImpl.java`
-  * Sync: `SyncFavoriteRepositoryImpl.java`
-* **Presenter** (`com.example.akoleih.favorite.presenter`)
-
-  * `FavoritePresenter.java` / `FavoritePresenterImpl.java`
-* **View** (`com.example.akoleih.favorite.view`)
-
-  * `FavoritesFragment.java`, `FavoriteAdapter.java`, `OnMealClickListener.java`
 
 ### Home Module
 
@@ -243,22 +519,6 @@ com/example/akoleih/
    // ... other libs
    ```
 
----
-
-## Building & Running
-
-1. Build the project in Android Studio (Build → Make Project).
-2. Run on emulator or physical device (min API 21, Internet).
-3. The bottom navigation will show Home, Calendar, Favorites, Profile.
-
----
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/YourFeature`
-3. Commit your changes and open a Pull Request.
-4. Ensure all modules follow MVP and include tests for presenters.
 
 ---
 
