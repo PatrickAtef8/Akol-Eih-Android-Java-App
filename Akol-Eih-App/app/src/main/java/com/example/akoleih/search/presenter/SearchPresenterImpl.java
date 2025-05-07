@@ -3,8 +3,8 @@ package com.example.akoleih.search.presenter;
 import com.example.akoleih.search.model.SearchMeal;
 import com.example.akoleih.search.model.repository.SearchRepository;
 import com.example.akoleih.search.model.repository.SearchType;
-import com.example.akoleih.search.network.api.DataSourceCallback;
-import com.example.akoleih.search.view.SearchView;
+import com.example.akoleih.search.model.network.api.DataSourceCallback;
+import com.example.akoleih.search.view.searchview.SearchView;
 
 import java.util.Collections;
 import java.util.List;

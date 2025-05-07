@@ -1,58 +1,48 @@
-
-
-/*
- * SearchActivity.java
- */
-package com.example.akoleih.search.view;
+package com.example.akoleih.search.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.akoleih.R;
-import com.example.akoleih.home.network.RetrofitClient;
-import com.example.akoleih.home.view.HomeMealDetailsThirdFragment;
-import com.example.akoleih.search.adapter.SearchMealsAdapter;
+import com.example.akoleih.home.view.fragments.thirdfragment.HomeMealDetailsThirdFragment;
+import com.example.akoleih.search.view.adapter.SearchMealsAdapter;
 import com.example.akoleih.search.model.SearchMeal;
-import com.example.akoleih.search.model.repository.SearchRepository;
-import com.example.akoleih.search.model.repository.SearchRepositoryImpl;
 import com.example.akoleih.search.model.repository.SearchType;
-import com.example.akoleih.search.network.api.SearchApiService;
-import com.example.akoleih.search.network.api.SearchRemoteDataSource;
-import com.example.akoleih.search.network.api.SearchRemoteDataSourceImpl;
-import com.example.akoleih.search.presenter.SearchPresenterImpl;
-import com.example.akoleih.search.view.SearchView;
+import com.example.akoleih.search.model.repository.SearchViewModel;
+import com.example.akoleih.utils.NoInternetDialog;
 import com.example.akoleih.utils.SearchValidator;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
-import java.util.List;
 
-public class SearchActivity extends AppCompatActivity
-        implements SearchView, SearchMealsAdapter.OnMealClickListener {
-
-    private SearchPresenterImpl presenter;
+public class SearchActivity extends AppCompatActivity implements SearchMealsAdapter.OnMealClickListener {
+    private SearchViewModel viewModel;
     private SearchMealsAdapter adapter;
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable searchRunnable;
     private static final int SEARCH_DELAY = 300;
+    private String lastQuery = "";
+    private SearchType lastSearchType = SearchType.ALL;
 
     private TextInputEditText searchEditText;
     private ChipGroup searchChipGroup;
     private AutoCompleteTextView areaAutoComplete;
     private AutoCompleteTextView categoryAutoComplete;
     private View emptyStateView;
-    private ImageView emptyStateIcon;
+    private LottieAnimationView emptyStateAnimation;
     private TextView emptyStateText;
 
     @Override
@@ -60,13 +50,15 @@ public class SearchActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Initialize views
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication()))
+                .get(SearchViewModel.class);
+
         searchEditText = findViewById(R.id.search_edit_text);
         searchChipGroup = findViewById(R.id.search_chip_group);
         areaAutoComplete = findViewById(R.id.area_autocomplete);
         categoryAutoComplete = findViewById(R.id.category_autocomplete);
         emptyStateView = findViewById(R.id.empty_state);
-        emptyStateIcon = findViewById(R.id.empty_state_icon);
+        emptyStateAnimation = findViewById(R.id.empty_state_animation);
         emptyStateText = findViewById(R.id.empty_state_text);
 
         RecyclerView rv = findViewById(R.id.results_recycler_view);
@@ -74,35 +66,28 @@ public class SearchActivity extends AppCompatActivity
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(adapter);
 
-        // Presenter setup
-        SearchApiService apiService = RetrofitClient.getInstance().create(SearchApiService.class);
-        SearchRemoteDataSource remote = new SearchRemoteDataSourceImpl(apiService);
-        SearchRepository repo = new SearchRepositoryImpl(remote);
-        presenter = new SearchPresenterImpl(this, repo);
-
         setupFilterUI();
+        setupSearchListeners();
+        setupObservers();
 
-        // Default filter to "All"
         findViewById(R.id.chip_all).performClick();
         performSearch("");
-
-        setupSearchListeners();
     }
 
-    @Override
-    public void onMealClick(SearchMeal meal) {
-        FrameLayout container = findViewById(R.id.search_fragment_container);
-        if (container.getVisibility() == View.GONE) {
-            container.setVisibility(View.VISIBLE);
-        }
+    private void setupObservers() {
+        viewModel.getSearchResultsLive().observe(this, meals -> {
+            adapter.updateMeals(meals);
+            showEmptyState(meals.isEmpty(), R.drawable.ic_no_results, "No results found");
+        });
 
-        HomeMealDetailsThirdFragment detailFrag =
-                HomeMealDetailsThirdFragment.newInstance(meal.getIdMeal());
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.search_fragment_container, detailFrag)
-                .addToBackStack(null)
-                .commit();
+        viewModel.getErrorLive().observe(this, message -> {
+            if ("NO_INTERNET".equals(message)) {
+                NoInternetDialog.show(this, () -> viewModel.search(lastQuery, lastSearchType));
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                showEmptyState(true, R.drawable.ic_error, "Error loading results");
+            }
+        });
     }
 
     private void setupFilterUI() {
@@ -125,6 +110,8 @@ public class SearchActivity extends AppCompatActivity
             searchEditText.setText("");
             areaAutoComplete.setText("");
             categoryAutoComplete.setText("");
+            lastQuery = "";
+            lastSearchType = SearchType.ALL;
             showEmptyState(true, R.drawable.ic_search, "Start typing to search");
 
             areaAutoComplete.setVisibility(id == R.id.chip_area ? View.VISIBLE : View.GONE);
@@ -146,7 +133,6 @@ public class SearchActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int st, int b, int c) {
-                // If details fragment is visible, hide it and go back to list
                 FrameLayout fragmentContainer = findViewById(R.id.search_fragment_container);
                 if (fragmentContainer.getVisibility() == View.VISIBLE) {
                     getSupportFragmentManager().popBackStack();
@@ -167,49 +153,64 @@ public class SearchActivity extends AppCompatActivity
         if (query.isEmpty()) {
             adapter.updateMeals(new ArrayList<>());
             showEmptyState(true, R.drawable.ic_search, "Start typing to search");
+            lastQuery = "";
+            lastSearchType = SearchType.ALL;
             return;
         }
 
         int checked = searchChipGroup.getCheckedChipId();
         SearchType type = SearchType.ALL;
-        if (checked == R.id.chip_area)       type = SearchType.AREA;
+        if (checked == R.id.chip_area) type = SearchType.AREA;
         else if (checked == R.id.chip_category) type = SearchType.CATEGORY;
         else if (checked == R.id.chip_ingredient) type = SearchType.INGREDIENT;
 
-        presenter.search(query, type);
+        lastQuery = query;
+        lastSearchType = type;
+        viewModel.search(query, type);
     }
 
     @Override
-    public void showResults(List<SearchMeal> meals) {
-        runOnUiThread(() -> {
-            adapter.updateMeals(meals);
-            showEmptyState(meals.isEmpty(), R.drawable.ic_no_results, "No results found");
-        });
+    public void onMealClick(SearchMeal meal) {
+        FrameLayout container = findViewById(R.id.search_fragment_container);
+        if (container.getVisibility() == View.GONE) {
+            container.setVisibility(View.VISIBLE);
+        }
+
+        HomeMealDetailsThirdFragment detailFrag =
+                HomeMealDetailsThirdFragment.newInstance(meal.getIdMeal());
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.search_fragment_container, detailFrag)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void showEmptyState(boolean show, int iconRes, String msg) {
         emptyStateView.setVisibility(show ? View.VISIBLE : View.GONE);
         if (show) {
-            emptyStateIcon.setImageResource(iconRes);
+            int animationRes;
+            if (iconRes == R.drawable.ic_search) {
+                animationRes = R.raw.searching;
+            } else if (iconRes == R.drawable.ic_no_results) {
+                animationRes = R.raw.noresult;
+            } else if (iconRes == R.drawable.ic_error) {
+                animationRes = R.raw.noresult;
+            } else {
+                animationRes = R.raw.typetosearch;
+            }
+
+            emptyStateAnimation.setAnimation(animationRes);
+            emptyStateAnimation.playAnimation();
+
             emptyStateText.setText(msg);
+        } else {
+            emptyStateAnimation.cancelAnimation();
         }
     }
 
     @Override
-    public void showError(String message) {
-        runOnUiThread(() -> {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            showEmptyState(true, R.drawable.ic_error, "Error loading results");
-        });
-    }
-
-    @Override public void showLoading() {}
-    @Override public void hideLoading() {}
-
-    @Override
     protected void onDestroy() {
         handler.removeCallbacksAndMessages(null);
-        presenter.onDestroy();
         super.onDestroy();
     }
 }

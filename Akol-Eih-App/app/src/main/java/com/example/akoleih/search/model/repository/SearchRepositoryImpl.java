@@ -1,8 +1,8 @@
 package com.example.akoleih.search.model.repository;
 
-import com.example.akoleih.search.network.api.DataSourceCallback;
-import com.example.akoleih.search.network.api.SearchRemoteDataSource;
-import com.example.akoleih.search.network.model.SearchResponse;
+import com.example.akoleih.search.model.network.api.DataSourceCallback;
+import com.example.akoleih.search.model.network.api.SearchRemoteDataSource;
+import com.example.akoleih.search.model.network.model.SearchResponse;
 import com.example.akoleih.search.model.SearchMeal;
 import retrofit2.Call;
 

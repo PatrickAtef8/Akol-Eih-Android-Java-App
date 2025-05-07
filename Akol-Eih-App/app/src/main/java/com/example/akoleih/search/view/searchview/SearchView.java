@@ -1,4 +1,4 @@
-package com.example.akoleih.search.view;
+package com.example.akoleih.search.view.searchview;
 
 import com.example.akoleih.search.model.SearchMeal;
 

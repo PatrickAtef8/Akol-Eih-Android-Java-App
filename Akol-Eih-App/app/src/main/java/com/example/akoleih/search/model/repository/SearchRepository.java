@@ -1,6 +1,6 @@
 package com.example.akoleih.search.model.repository;
 
-import com.example.akoleih.search.network.api.DataSourceCallback;
+import com.example.akoleih.search.model.network.api.DataSourceCallback;
 import com.example.akoleih.search.model.SearchMeal;
 import java.util.List;
 
