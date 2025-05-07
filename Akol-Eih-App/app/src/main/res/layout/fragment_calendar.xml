@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?attr/colorSurface">
+
+    <!-- Calendar Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="?attr/colorPrimarySurface">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            app:mcv_arrowColor="?attr/colorOnPrimary"
+            app:mcv_dateTextAppearance="@style/CalendarDateText"
+            app:mcv_headerTextAppearance="@style/CalendarHeader"
+            app:mcv_selectionColor="?attr/colorSecondary"
+            app:mcv_showOtherDates="all" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Meals List Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="?attr/colorSurface">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mealsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_smoke"
+            android:clipToPadding="false"
+            android:padding="8dp" />
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

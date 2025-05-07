@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="280dp"
     android:layout_marginBottom="16dp"
@@ -63,26 +64,31 @@
                 android:textColor="#161E26"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/meal_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/libre_baskerville_italic"
-                android:text="Italian"
-                android:textColor="#161E26"
-                android:textSize="14sp" />
         </LinearLayout>
+
+        <!-- Calendar Icon (New Addition) -->
 
         <!-- Favorite Icon -->
         <ImageView
-            android:id="@+id/iv_favorite"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:id="@+id/iv_calendar"
+            android:layout_width="77dp"
+            android:layout_height="72dp"
             android:layout_margin="16dp"
-            android:src="@drawable/wishlist"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="88dp"
+            android:layout_height="76dp"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/notclickedfav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

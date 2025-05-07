@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:strokeColor="?attr/colorOutline"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvDatePickerTitle"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="Date picker title"
+            android:fontFamily="sans-serif-medium"
+            android:paddingBottom="16dp"
+            android:text="Select a Date"
+            android:textColor="?attr/colorOnSurface" />
+
+        <!-- Calendar -->
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/colorSurface"
+            android:contentDescription="Date selection calendar"
+            android:minHeight="320dp"
+            app:mcv_arrowColor="?attr/colorOnSurface"
+            app:mcv_dateTextAppearance="@style/CalendarDateText"
+            app:mcv_headerTextAppearance="@style/CalendarHeader"
+            app:mcv_selectionColor="?attr/colorPrimary"
+            app:mcv_showOtherDates="all"
+            app:mcv_tileSize="44dp" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Cancel date selection"
+                android:minWidth="100dp"
+                android:text="Cancel"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:rippleColor="?attr/colorPrimaryContainer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnConfirm"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:contentDescription="Confirm selected date"
+                android:minWidth="100dp"
+                android:text="Confirm"
+                android:textColor="?attr/colorOnPrimary"
+                app:backgroundTint="@color/teal_500"
+                app:rippleColor="?attr/colorPrimaryContainer" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

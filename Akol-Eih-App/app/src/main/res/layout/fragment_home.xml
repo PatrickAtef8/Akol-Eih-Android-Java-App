@@ -15,12 +15,25 @@
         android:paddingHorizontal="16dp"
         android:paddingTop="16dp">
 
-        <!-- Header with Search -->
+        <!-- No Data Text -->
+        <TextView
+            android:id="@+id/no_data_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No data available"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text"
+            android:fontFamily="@font/libre_baskerville"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Header with Search (Removed empty padding) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="24dp" />
+            android:paddingVertical="12dp" />
 
         <!-- Today's Special Card -->
         <com.google.android.material.card.MaterialCardView
@@ -63,6 +76,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="2dp"
@@ -95,6 +109,43 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Spacer for bottom navigation -->
+        <!-- Explore by Country Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/light_gray"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/libre_baskerville_bold"
+                    android:text="Explore by Country"
+                    android:textColor="#1f3d2b"
+                    android:textSize="23sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/flags_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="4dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
