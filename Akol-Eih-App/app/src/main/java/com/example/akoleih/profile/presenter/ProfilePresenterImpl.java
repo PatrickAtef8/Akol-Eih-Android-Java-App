@@ -1,9 +1,9 @@
 package com.example.akoleih.profile.presenter;
 
 import android.net.Uri;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.example.akoleih.profile.model.ProfileRepository;
-import com.example.akoleih.profile.model.ProfileRepositoryImpl;
+
+import com.example.akoleih.profile.model.repository.ProfileRepository;
+import com.example.akoleih.profile.model.repository.ProfileRepositoryImpl;
 import com.example.akoleih.profile.model.UserProfile;
 import com.example.akoleih.profile.view.ProfileView;
 

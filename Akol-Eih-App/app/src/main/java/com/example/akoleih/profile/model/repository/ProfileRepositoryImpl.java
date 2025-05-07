@@ -1,6 +1,8 @@
-package com.example.akoleih.profile.model;
+package com.example.akoleih.profile.model.repository;
 
 import android.net.Uri;
+
+import com.example.akoleih.profile.model.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
