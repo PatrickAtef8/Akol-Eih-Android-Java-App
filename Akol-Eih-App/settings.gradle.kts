@@ -9,16 +9,26 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://jitpack.io") }
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+    // Prioritize mavenCentral for Lottie to avoid JitPack conflicts
+    repositories {
+        mavenCentral() {
+            content {
+                includeModule("com.airbnb.lottie", "lottie")
+            }
+        }
     }
 }
 
-rootProject.name = "Akol-Eih"
+rootProject.name = "AkolEih"
 include(":app")
- 

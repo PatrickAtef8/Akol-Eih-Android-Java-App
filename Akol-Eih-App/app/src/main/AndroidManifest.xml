@@ -5,11 +5,11 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:name=".MainApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcherakoleihlogo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcherakoleihlogo_round"
@@ -32,14 +32,14 @@
             </intent-filter>
         </activity>
 
-        <!-- Main / Navigation (not a launcher) -->
+        <!-- Main / Navigation -->
         <activity
             android:name=".NavigationActivity"
             android:exported="false" />
 
         <!-- Search -->
         <activity
-            android:name=".search.view.SearchActivity"
+            android:name=".search.view.activity.SearchActivity"
             android:exported="false" />
 
         <!-- Auth: Sign-Up -->
@@ -52,6 +52,7 @@
         <activity
             android:name=".auth.view.LoginActivity"
             android:exported="true"
+            android:importantForAutofill="auto"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Profile -->
@@ -60,4 +61,5 @@
             android:exported="false" />
 
     </application>
+
 </manifest>
