@@ -2,13 +2,13 @@ package com.example.akoleih.favorite.presenter;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import com.example.akoleih.favorite.model.FavoriteMeal;
 import com.example.akoleih.favorite.model.repository.FavoriteRepository;
 import java.util.List;
 
 public class FavoritePresenterImpl implements FavoritePresenter {
     private FavoriteView view;
+    private LifecycleOwner lifecycleOwner;
     private final FavoriteRepository repo;
     private final LiveData<List<FavoriteMeal>> favoritesLiveData;
 
@@ -18,13 +18,16 @@ public class FavoritePresenterImpl implements FavoritePresenter {
     }
 
     @Override
-    public void attachView(FavoriteView view) {
+    public void attachView(FavoriteView view, LifecycleOwner lifecycleOwner) {
         this.view = view;
+        this.lifecycleOwner = lifecycleOwner;
+        loadFavorites();
     }
 
     @Override
     public void detachView() {
-        view = null;
+        this.view = null;
+        this.lifecycleOwner = null;
     }
 
     @Override
@@ -34,25 +37,30 @@ public class FavoritePresenterImpl implements FavoritePresenter {
 
     @Override
     public void loadFavorites() {
-        favoritesLiveData.observe((LifecycleOwner) view, new Observer<List<FavoriteMeal>>() {
-            @Override
-            public void onChanged(List<FavoriteMeal> meals) {
-                if (meals == null || meals.isEmpty()) {
-                    view.showEmpty();
-                } else {
-                    view.showFavorites(meals);
-                }
+        if (lifecycleOwner == null || view == null) return;
+
+        favoritesLiveData.observe(lifecycleOwner, meals -> {
+            if (view == null) return;
+
+            if (meals == null || meals.isEmpty()) {
+                view.showEmpty();
+            } else {
+                view.showFavorites(meals);
             }
         });
     }
 
     @Override
     public void addFavorite(FavoriteMeal meal) {
-        repo.addFavorite(meal);
+        if (repo != null) {
+            repo.addFavorite(meal);
+        }
     }
 
     @Override
     public void deleteFavorite(FavoriteMeal meal) {
-        repo.removeFavorite(meal);
+        if (repo != null) {
+            repo.removeFavorite(meal);
+        }
     }
 }
