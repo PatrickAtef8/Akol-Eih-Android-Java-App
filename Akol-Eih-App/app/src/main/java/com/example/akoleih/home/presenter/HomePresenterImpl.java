@@ -3,8 +3,8 @@ package com.example.akoleih.home.presenter;
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
 import com.example.akoleih.home.model.repository.HomeRepository;
-import com.example.akoleih.home.network.api.DataSourceCallback;
-import com.example.akoleih.home.view.HomeView;
+import com.example.akoleih.home.model.network.api.DataSourceCallback;
+import com.example.akoleih.home.view.homeview.HomeView;
 
 import java.util.List;
 

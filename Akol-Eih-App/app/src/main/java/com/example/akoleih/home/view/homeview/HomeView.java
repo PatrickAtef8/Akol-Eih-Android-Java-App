@@ -1,5 +1,5 @@
 // HomeView.java
-package com.example.akoleih.home.view;
+package com.example.akoleih.home.view.homeview;
 
 import com.example.akoleih.home.model.Category;
 import com.example.akoleih.home.model.Meal;
