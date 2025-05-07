@@ -1,7 +1,7 @@
 package com.example.akoleih.auth.presenter;
 
-import com.example.akoleih.auth.model.AuthCallback;
-import com.example.akoleih.auth.model.AuthRepository;
+import com.example.akoleih.auth.model.callbacks.AuthCallback;
+import com.example.akoleih.auth.model.repository.AuthRepository;
 import com.example.akoleih.auth.view.LoginView;
 
 public class LoginPresenterImpl implements LoginPresenter {
@@ -23,6 +23,24 @@ public class LoginPresenterImpl implements LoginPresenter {
 
         loginView.showLoading();
         authRepository.login(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess() {
+                loginView.hideLoading();
+                loginView.onLoginSuccess();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                loginView.hideLoading();
+                loginView.onLoginError(message);
+            }
+        });
+    }
+
+    @Override
+    public void loginAsGuest() {
+        loginView.showLoading();
+        authRepository.setGuestMode(new AuthCallback() {
             @Override
             public void onSuccess() {
                 loginView.hideLoading();

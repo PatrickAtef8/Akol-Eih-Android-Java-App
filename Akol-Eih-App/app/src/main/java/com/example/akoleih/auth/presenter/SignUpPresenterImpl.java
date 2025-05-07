@@ -3,8 +3,8 @@ package com.example.akoleih.auth.presenter;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.example.akoleih.auth.model.AuthCallback;
-import com.example.akoleih.auth.model.AuthRepository;
+import com.example.akoleih.auth.model.callbacks.AuthCallback;
+import com.example.akoleih.auth.model.repository.AuthRepository;
 import com.example.akoleih.auth.view.SignUpView;
 
 public class SignUpPresenterImpl implements SignUpPresenter {
