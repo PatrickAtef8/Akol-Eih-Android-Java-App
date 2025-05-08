@@ -29,7 +29,7 @@ public class SignUpPresenterImpl implements SignUpPresenter {
             @Override
             public void onSuccess() {
                 view.hideLoading();
-                view.onSignUpSuccess();
+                view.navigateToLogin();
             }
 
             @Override

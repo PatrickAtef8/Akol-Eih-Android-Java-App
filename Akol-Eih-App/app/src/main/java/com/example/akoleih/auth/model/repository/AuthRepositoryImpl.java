@@ -3,6 +3,7 @@ package com.example.akoleih.auth.model.repository;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -26,7 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthRepositoryImpl implements AuthRepository {
     private static final String TAG = "AuthRepository";
-    private static final int RC_GOOGLE_SIGN_IN = 123; // Same as in SignUpPresenterImpl
+    private static final int RC_GOOGLE_SIGN_IN = 123;
     private final FirebaseAuth auth;
     private final Context context;
     private final PersistentHomeLocalDataSource localDataSource;
@@ -44,9 +45,8 @@ public class AuthRepositoryImpl implements AuthRepository {
         this.favoriteRepository = new SyncFavoriteRepositoryImpl(context);
         this.mainHandler = new Handler(Looper.getMainLooper());
 
-        // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id)) // From google-services.json
+                .requestIdToken(context.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(context, gso);
@@ -120,14 +120,14 @@ public class AuthRepositoryImpl implements AuthRepository {
                                     @Override
                                     public void onFailure(String error) {
                                         Log.e(TAG, "Calendar sync failed: " + error);
-                                        mainHandler.post(() -> callback.onSuccess()); // Proceed despite failure
+                                        mainHandler.post(() -> callback.onSuccess());
                                     }
                                 });
                             }
                             @Override
                             public void onFailure(String error) {
                                 Log.e(TAG, "Favorites sync failed: " + error);
-                                mainHandler.post(() -> callback.onSuccess()); // Proceed despite failure
+                                mainHandler.post(() -> callback.onSuccess());
                             }
                         });
                     } else {
@@ -164,14 +164,14 @@ public class AuthRepositoryImpl implements AuthRepository {
                                     @Override
                                     public void onFailure(String error) {
                                         Log.e(TAG, "Calendar sync failed: " + error);
-                                        mainHandler.post(() -> callback.onSuccess()); // Proceed despite failure
+                                        mainHandler.post(() -> callback.onSuccess());
                                     }
                                 });
                             }
                             @Override
                             public void onFailure(String error) {
                                 Log.e(TAG, "Favorites sync failed: " + error);
-                                mainHandler.post(() -> callback.onSuccess()); // Proceed despite failure
+                                mainHandler.post(() -> callback.onSuccess());
                             }
                         });
                     } else {
@@ -195,6 +195,9 @@ public class AuthRepositoryImpl implements AuthRepository {
         calendarRepository.clearCalendarData();
         favoriteRepository.clearFavoriteData();
         AppDatabase.clearInstance();
+        // Clear app_prefs SharedPreferences
+        SharedPreferences appPrefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        appPrefs.edit().clear().apply();
         Log.d(TAG, "Guest mode set successfully");
         mainHandler.post(() -> callback.onSuccess());
     }
@@ -202,9 +205,17 @@ public class AuthRepositoryImpl implements AuthRepository {
     @Override
     public void logout() {
         Log.d(TAG, "Logging out");
+        // Sign out from Firebase
         auth.signOut();
-        SharedPrefUtil.saveUid(context, null);
-        SharedPrefUtil.saveGuestMode(context, false);
+        // Sign out from Google Sign-In
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            Log.d(TAG, "Google Sign-In signed out");
+        });
+        // Clear all SharedPreferences
+        SharedPrefUtil.clearAll(context);
+        // Clear app_prefs SharedPreferences
+        SharedPreferences appPrefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE);
+        appPrefs.edit().clear().apply();
         localDataSource.clearGuestData();
         calendarRepository.clearCalendarData();
         favoriteRepository.clearFavoriteData();

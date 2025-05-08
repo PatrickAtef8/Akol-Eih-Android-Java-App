@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,6 +23,7 @@ import com.example.akoleih.search.view.adapter.SearchMealsAdapter;
 import com.example.akoleih.search.model.SearchMeal;
 import com.example.akoleih.search.model.repository.SearchType;
 import com.example.akoleih.search.model.repository.SearchViewModel;
+import com.example.akoleih.utils.NetworkUtil;
 import com.example.akoleih.utils.NoInternetDialog;
 import com.example.akoleih.utils.SearchValidator;
 import com.google.android.material.chip.ChipGroup;
@@ -29,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity implements SearchMealsAdapter.OnMealClickListener {
+    private static final String TAG = "SearchActivity";
     private SearchViewModel viewModel;
     private SearchMealsAdapter adapter;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -66,6 +69,14 @@ public class SearchActivity extends AppCompatActivity implements SearchMealsAdap
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(adapter);
 
+        // Check initial network state
+        if (!NetworkUtil.isConnected(getApplication())) {
+            Log.e(TAG, "Initial network check: No internet, showing dialog");
+            NoInternetDialog.show(this, () -> viewModel.search(lastQuery, lastSearchType));
+        } else {
+            Log.d(TAG, "Initial network check: Connected");
+        }
+
         setupFilterUI();
         setupSearchListeners();
         setupObservers();
@@ -78,9 +89,11 @@ public class SearchActivity extends AppCompatActivity implements SearchMealsAdap
         viewModel.getSearchResultsLive().observe(this, meals -> {
             adapter.updateMeals(meals);
             showEmptyState(meals.isEmpty(), R.drawable.ic_no_results, "No results found");
+            Log.d(TAG, "Search results updated, count: " + (meals != null ? meals.size() : 0));
         });
 
         viewModel.getErrorLive().observe(this, message -> {
+            Log.d(TAG, "Error received: " + message);
             if ("NO_INTERNET".equals(message)) {
                 NoInternetDialog.show(this, () -> viewModel.search(lastQuery, lastSearchType));
             } else {

@@ -14,17 +14,14 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.akoleih.R;
 
 public class NoInternetDialog {
-
+    private static final String TAG = "NoInternetDialog";
     private static Dialog currentDialog = null;
 
     public static void show(@NonNull Context context, Runnable onRetry) {
-        Log.d("NoInternetDialog", "Attempting to show dialog");
+        Log.d(TAG, "Attempting to show dialog");
 
-        // Prevent multiple dialogs
-        if (currentDialog != null && currentDialog.isShowing()) {
-            Log.d("NoInternetDialog", "Dialog already showing, skipping");
-            return;
-        }
+        // Dismiss any existing dialog
+        dismiss();
 
         try {
             Dialog dialog = new Dialog(context);
@@ -45,15 +42,15 @@ public class NoInternetDialog {
                 lottieAnimation.setScaleX(1.0f);
                 lottieAnimation.setScaleY(1.0f);
                 lottieAnimation.playAnimation();
-                Log.d("NoInternetDialog", "Lottie animation loaded and playing");
+                Log.d(TAG, "Lottie animation loaded and playing");
             } catch (Exception e) {
-                Log.e("NoInternetDialog", "Failed to load Lottie animation: " + e.getMessage());
+                Log.e(TAG, "Failed to load Lottie animation: " + e.getMessage());
                 lottieAnimation.setVisibility(View.GONE);
                 message.setText("No internet connection. Please check your network.");
             }
 
             retryButton.setOnClickListener(v -> {
-                Log.d("NoInternetDialog", "Retry button clicked");
+                Log.d(TAG, "Retry button clicked");
                 if (onRetry != null) {
                     onRetry.run();
                 }
@@ -62,26 +59,38 @@ public class NoInternetDialog {
             });
 
             closeButton.setOnClickListener(v -> {
-                Log.d("NoInternetDialog", "Close button clicked");
+                Log.d(TAG, "Close button clicked");
                 dialog.dismiss();
                 currentDialog = null;
             });
 
             dialog.setOnDismissListener(d -> {
-                Log.d("NoInternetDialog", "Dialog dismissed");
+                Log.d(TAG, "Dialog dismissed");
                 currentDialog = null;
             });
 
             dialog.show();
-            Log.d("NoInternetDialog", "Dialog shown successfully");
+            Log.d(TAG, "Dialog shown successfully");
         } catch (Exception e) {
-            Log.e("NoInternetDialog", "Failed to show dialog: " + e.getMessage());
+            Log.e(TAG, "Failed to show dialog: " + e.getMessage());
             currentDialog = null;
             try {
                 android.widget.Toast.makeText(context, "No internet connection", android.widget.Toast.LENGTH_SHORT).show();
             } catch (Exception toastException) {
-                Log.e("NoInternetDialog", "Failed to show fallback Toast: " + toastException.getMessage());
+                Log.e(TAG, "Failed to show fallback Toast: " + toastException.getMessage());
             }
+        }
+    }
+
+    public static void dismiss() {
+        if (currentDialog != null && currentDialog.isShowing()) {
+            try {
+                currentDialog.dismiss();
+                Log.d(TAG, "Existing dialog dismissed");
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to dismiss dialog: " + e.getMessage());
+            }
+            currentDialog = null;
         }
     }
 }

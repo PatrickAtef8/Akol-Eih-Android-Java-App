@@ -13,6 +13,11 @@ public class SharedPrefUtil {
         prefs.edit().putString(KEY_UID, uid).apply();
     }
 
+    public static String getUid(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        return prefs.getString(KEY_UID, null);
+    }
+
     public static void saveGuestMode(Context context, boolean isGuest) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(KEY_GUEST_MODE, isGuest).apply();
@@ -21,5 +26,10 @@ public class SharedPrefUtil {
     public static boolean isGuestMode(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         return prefs.getBoolean(KEY_GUEST_MODE, false);
+    }
+
+    public static void clearAll(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
     }
 }

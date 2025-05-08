@@ -2,34 +2,29 @@ package com.example.akoleih.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.util.Log;
 
 public class NetworkUtil {
+    private static final String TAG = "NetworkUtil";
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        boolean isConnected = false;
-
-        if (cm != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Network activeNetwork = cm.getActiveNetwork();
-                if (activeNetwork != null) {
-                    NetworkCapabilities capabilities = cm.getNetworkCapabilities(activeNetwork);
-                    isConnected = capabilities != null &&
-                            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
-                }
-            } else {
-                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                isConnected = activeNetwork != null && activeNetwork.isConnected();
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm != null) {
+                NetworkCapabilities capabilities = cm.getNetworkCapabilities(cm.getActiveNetwork());
+                boolean isConnected = capabilities != null &&
+                        (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+                Log.d(TAG, "Network check: isConnected=" + isConnected);
+                return isConnected;
             }
+            Log.w(TAG, "ConnectivityManager is null");
+            return false;
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to check network: " + e.getMessage());
+            return false;
         }
-
-        Log.d("NetworkUtil", "isConnected: " + isConnected);
-        return isConnected;
     }
 }

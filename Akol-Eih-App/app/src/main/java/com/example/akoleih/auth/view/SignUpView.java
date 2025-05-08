@@ -5,4 +5,5 @@ public interface SignUpView {
     void hideLoading();
     void onSignUpSuccess();
     void onSignUpError(String message);
+    void navigateToLogin();
 }

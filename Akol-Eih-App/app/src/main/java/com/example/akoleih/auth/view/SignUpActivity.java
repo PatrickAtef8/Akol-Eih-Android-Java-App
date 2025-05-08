@@ -1,4 +1,3 @@
-// SignUpActivity.java
 package com.example.akoleih.auth.view;
 
 import android.content.Intent;
@@ -17,6 +16,7 @@ import com.example.akoleih.NavigationActivity;
 import com.example.akoleih.R;
 import com.example.akoleih.auth.model.repository.AuthRepositoryImpl;
 import com.example.akoleih.auth.presenter.SignUpPresenterImpl;
+import com.example.akoleih.utils.SharedPrefUtil;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpView {
@@ -33,18 +33,12 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 1) shared‑prefs check first
+        // Check SharedPreferences and authentication state
         prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        if (prefs.getBoolean(KEY_LOGGED_IN, false)) {
-            startActivity(new Intent(this, NavigationActivity.class));
-            finish();
-            return;
-        }
-
-        // 2) also check FirebaseAuth if desired
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null) {
-            prefs.edit().putBoolean(KEY_LOGGED_IN, true).apply();
+        String savedUid = SharedPrefUtil.getUid(this);
+
+        if (prefs.getBoolean(KEY_LOGGED_IN, false) && auth.getCurrentUser() != null && savedUid != null) {
             startActivity(new Intent(this, NavigationActivity.class));
             finish();
             return;
@@ -61,18 +55,15 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
 
         signUpPresenter = new SignUpPresenterImpl(this, new AuthRepositoryImpl(this));
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                String email    = emailEditText.getText().toString().trim();
-                                                String password = passwordEditText.getText().toString().trim();
-                                                signUpPresenter.signUp(email, password);
-                                            }
-                                        });
+        signUpButton.setOnClickListener(v -> {
+            String email    = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            signUpPresenter.signUp(email, password);
+        });
 
-                googleSignInButton.setOnClickListener(v ->
-                        signUpPresenter.signInWithGoogle(this)
-                );
+        googleSignInButton.setOnClickListener(v ->
+                signUpPresenter.signInWithGoogle(this)
+        );
 
         loginText.setOnClickListener(v ->
                 startActivity(new Intent(this, LoginActivity.class))
@@ -89,26 +80,30 @@ public class SignUpActivity extends AppCompatActivity implements SignUpView {
 
     @Override
     public void showLoading() {
-        progressBar.setVisibility(android.view.View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        progressBar.setVisibility(android.view.View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onSignUpSuccess() {
-        // 3) mark loggedIn
-        prefs.edit().putBoolean(KEY_LOGGED_IN, true).apply();
-
-        Toast.makeText(this, "Sign up successful!", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, NavigationActivity.class));
-        finish();
+        Toast.makeText(this, "Sign up successful! Please log in.", Toast.LENGTH_SHORT).show();
+        navigateToLogin();
     }
 
     @Override
     public void onSignUpError(String message) {
         Toast.makeText(this, "Error: " + message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

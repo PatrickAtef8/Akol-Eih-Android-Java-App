@@ -8,7 +8,7 @@ import java.util.Map;
 public interface DataRepository {
     void saveUserData(Map<String, Object> data, DataCallback<Void> callback);
     void getUserData(DataCallback<Map<String, Object>> callback);
-    
+
     void saveProfileData(String name, String email, String profileImageUrl, DataCallback<Void> callback);
     void saveFavorite(FavoriteMeal meal, DataCallback<Void> callback);
     void getFavorites(DataCallback<List<FavoriteMeal>> callback);
