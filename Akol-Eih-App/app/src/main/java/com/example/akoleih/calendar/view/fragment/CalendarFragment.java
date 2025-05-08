@@ -19,12 +19,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.akoleih.R;
 import com.example.akoleih.calendar.model.db.CalendarMeal;
 import com.example.akoleih.calendar.presenter.CalendarPresenter;
 import com.example.akoleih.calendar.view.adapter.CalendarAdapter;
+import com.example.akoleih.calendar.view.adapter.listener.OnDeleteClickListener;
+import com.example.akoleih.calendar.view.adapter.listener.OnPlannedMealClickListener;
 import com.example.akoleih.calendar.view.util.CalendarDecorators;
 import com.example.akoleih.calendar.view.viewinterface.CalendarView;
 import com.example.akoleih.home.view.fragments.thirdfragment.HomeMealDetailsThirdFragment;
@@ -41,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CalendarFragment extends Fragment implements CalendarView, CalendarAdapter.OnPlannedMealClickListener {
+public class CalendarFragment extends Fragment implements CalendarView, OnPlannedMealClickListener {
     private static final String TAG = "CalendarFragment";
     private RecyclerView mealsRecycler;
     private CalendarAdapter adapter;
@@ -67,7 +70,12 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
         mealsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new CalendarAdapter(
-                (meal, pos) -> presenter.onMealDeleteRequested(meal, pos),
+                new OnDeleteClickListener() {
+                    @Override
+                    public void onDeleteClick(CalendarMeal meal, int position) {
+                        presenter.onMealDeleteRequested(meal, position);
+                    }
+                },
                 this
         );
         mealsRecycler.setAdapter(adapter);
@@ -88,15 +96,20 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
         presenter.attachView(this, this);
 
         getParentFragmentManager().setFragmentResultListener(
-                "mealAdded", this, (key, result) -> {
-                    long addedDate = result.getLong("addedDate");
-                    presenter.loadPlannedDates();
-                    LocalDate local = Instant.ofEpochMilli(addedDate)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate();
-                    calendarView.setSelectedDate(CalendarDay.from(local));
-                    presenter.loadMealsForDate(addedDate);
-                    Log.d(TAG, "Meal added for date: " + local);
+                "mealAdded",
+                this,
+                new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(String key, Bundle result) {
+                        long addedDate = result.getLong("addedDate");
+                        presenter.loadPlannedDates();
+                        LocalDate local = Instant.ofEpochMilli(addedDate)
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        calendarView.setSelectedDate(CalendarDay.from(local));
+                        presenter.loadMealsForDate(addedDate);
+                        Log.d(TAG, "Meal added for date: " + local);
+                    }
                 }
         );
 

@@ -1,19 +1,26 @@
+// FavoritePresenterImpl.java
 package com.example.akoleih.favorite.presenter;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import com.example.akoleih.favorite.model.FavoriteMeal;
 import com.example.akoleih.favorite.model.repository.FavoriteRepository;
+import com.example.akoleih.favorite.view.navigation.FavoriteNavigator;
 import java.util.List;
 
 public class FavoritePresenterImpl implements FavoritePresenter {
     private FavoriteView view;
+    private FavoriteNavigator navigator;
     private LifecycleOwner lifecycleOwner;
     private final FavoriteRepository repo;
     private final LiveData<List<FavoriteMeal>> favoritesLiveData;
 
-    public FavoritePresenterImpl(FavoriteRepository repo) {
+    private FavoriteMeal lastRemovedMeal;
+    private int lastRemovedPosition;
+
+    public FavoritePresenterImpl(FavoriteRepository repo, FavoriteNavigator navigator) {
         this.repo = repo;
+        this.navigator = navigator;
         this.favoritesLiveData = repo.getFavorites();
     }
 
@@ -31,11 +38,6 @@ public class FavoritePresenterImpl implements FavoritePresenter {
     }
 
     @Override
-    public LiveData<List<FavoriteMeal>> getFavoritesLiveData() {
-        return favoritesLiveData;
-    }
-
-    @Override
     public void loadFavorites() {
         if (lifecycleOwner == null || view == null) return;
 
@@ -43,7 +45,7 @@ public class FavoritePresenterImpl implements FavoritePresenter {
             if (view == null) return;
 
             if (meals == null || meals.isEmpty()) {
-                view.showEmpty();
+                view.showEmptyState();
             } else {
                 view.showFavorites(meals);
             }
@@ -61,6 +63,24 @@ public class FavoritePresenterImpl implements FavoritePresenter {
     public void deleteFavorite(FavoriteMeal meal) {
         if (repo != null) {
             repo.removeFavorite(meal);
+            this.lastRemovedMeal = meal;
+            view.showUndoOption();
+        }
+    }
+
+    @Override
+    public void undoLastDelete() {
+        if (lastRemovedMeal != null) {
+            addFavorite(lastRemovedMeal);
+            view.restoreFavorite(lastRemovedMeal, lastRemovedPosition);
+            lastRemovedMeal = null;
+        }
+    }
+
+    @Override
+    public void onMealClicked(FavoriteMeal meal) {
+        if (navigator != null) {
+            navigator.navigateToMealDetails(meal.getIdMeal());
         }
     }
 }

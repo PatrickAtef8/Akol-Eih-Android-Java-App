@@ -74,18 +74,25 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavVH>
                 .error(R.drawable.foodloading)
                 .into(holder.thumb);
 
-        holder.deleteBtn.setOnClickListener(v -> {
-            int pos = holder.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION && deleteListener != null) {
-                deleteListener.onDelete(data.get(pos), pos);
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION && deleteListener != null) {
+                    deleteListener.onDelete(data.get(pos), pos);
+                }
             }
         });
 
-        holder.itemView.setOnClickListener(v -> {
-            if (mealListener != null) {
-                mealListener.onMealClick(meal);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mealListener != null) {
+                    mealListener.onMealClick(meal);
+                }
             }
         });
+
     }
 
     @Override

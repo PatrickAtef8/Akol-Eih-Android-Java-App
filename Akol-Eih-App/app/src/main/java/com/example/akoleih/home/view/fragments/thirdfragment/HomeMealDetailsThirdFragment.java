@@ -29,7 +29,7 @@ import com.example.akoleih.home.view.adapters.ingredients.IngredientAdapter;
 import com.example.akoleih.home.model.Meal;
 import com.example.akoleih.home.model.repository.HomeViewModel;
 import com.example.akoleih.home.view.fragments.videofragment.VideoFragment;
-import com.example.akoleih.home.view.fragments.videofragment.DatePickerDialogFragment;
+import com.example.akoleih.home.view.fragments.datepickerfragment.DatePickerDialogFragment;
 import com.example.akoleih.utils.CountryFlagUtil;
 import com.example.akoleih.utils.CustomLoginDialog;
 import com.example.akoleih.utils.NoInternetDialog;

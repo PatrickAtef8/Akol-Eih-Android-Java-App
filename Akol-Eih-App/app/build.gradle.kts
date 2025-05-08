@@ -68,6 +68,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata:2.8.0")
 
     implementation ("com.google.firebase:firebase-appcheck-playintegrity:18.0.0")
+    testImplementation ("junit:junit:4.13.2")
+
+    androidTestImplementation ("androidx.test:core:1.5.0")
+    androidTestImplementation ("androidx.test:runner:1.5.2")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
 
 
 

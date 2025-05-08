@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.akoleih.R;
 import com.example.akoleih.calendar.model.db.CalendarMeal;
+import com.example.akoleih.calendar.view.adapter.listener.OnDeleteClickListener;
+import com.example.akoleih.calendar.view.adapter.listener.OnPlannedMealClickListener;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -18,14 +20,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     private final List<CalendarMeal> meals = new ArrayList<>();
     private final OnDeleteClickListener deleteClickListener;
     private final OnPlannedMealClickListener mealClickListener;
-
-    public interface OnDeleteClickListener {
-        void onDeleteClick(CalendarMeal meal, int position);
-    }
-
-    public interface OnPlannedMealClickListener {
-        void onMealClick(CalendarMeal meal);
-    }
 
     public CalendarAdapter(OnDeleteClickListener deleteClickListener, OnPlannedMealClickListener mealClickListener) {
         this.deleteClickListener = deleteClickListener;
@@ -38,17 +32,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    public CalendarMeal removeItem(int position) {
-        CalendarMeal removed = meals.remove(position);
-        notifyItemRemoved(position);
-        return removed;
-    }
 
     public void addItem(int position, CalendarMeal meal) {
         meals.add(position, meal);
         notifyItemInserted(position);
-    }
 
+
+    }
+/*******************************view holder*************************************/
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,14 +57,19 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                 .placeholder(R.drawable.gradient_overlay)
                 .error(R.drawable.ic_no_results)
                 .into(holder.mealThumb);
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteClickListener.onDeleteClick(meal, holder.getAdapterPosition());
+            }
+        });
 
-        holder.deleteButton.setOnClickListener(v ->
-                deleteClickListener.onDeleteClick(meal, holder.getAdapterPosition())
-        );
-
-        holder.itemView.setOnClickListener(v ->
-                mealClickListener.onMealClick(meal)
-        );
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mealClickListener.onMealClick(meal);
+            }
+        });
     }
 
     @Override

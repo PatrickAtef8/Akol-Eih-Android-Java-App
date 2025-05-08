@@ -1,9 +1,8 @@
+// FavoritePresenter.java
 package com.example.akoleih.favorite.presenter;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import com.example.akoleih.favorite.model.FavoriteMeal;
-import java.util.List;
 
 public interface FavoritePresenter {
     void attachView(FavoriteView view, LifecycleOwner lifecycleOwner);
@@ -11,5 +10,6 @@ public interface FavoritePresenter {
     void loadFavorites();
     void addFavorite(FavoriteMeal meal);
     void deleteFavorite(FavoriteMeal meal);
-    LiveData<List<FavoriteMeal>> getFavoritesLiveData();
+    void undoLastDelete();
+    void onMealClicked(FavoriteMeal meal);
 }
