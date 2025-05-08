@@ -8,16 +8,16 @@
 
     <ImageView
         android:id="@+id/splashImageView"
-        android:layout_width="1210dp"
-        android:layout_height="1026dp"
+        android:layout_width="905dp"
+        android:layout_height="1087dp"
         android:src="@drawable/splashnine"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.429"
+        app:layout_constraintHorizontal_bias="0.345"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.176" />
+        app:layout_constraintVertical_bias="0.079" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"

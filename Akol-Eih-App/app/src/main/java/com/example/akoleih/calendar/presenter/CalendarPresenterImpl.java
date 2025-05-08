@@ -121,7 +121,7 @@ public class CalendarPresenterImpl implements CalendarPresenter {
     @Override
     public void onUndoRequested() {
         if (pendingDeleteMeal != null && pendingDeletePosition >= 0 && calendarView != null) {
-            repository.addMeal(pendingDeleteMeal); 
+            repository.addMeal(pendingDeleteMeal);
             calendarView.restoreMeal(pendingDeleteMeal, pendingDeletePosition);
             Log.d(TAG, "Undo restore for meal: " + pendingDeleteMeal.getMealId());
             pendingDeleteMeal = null;
