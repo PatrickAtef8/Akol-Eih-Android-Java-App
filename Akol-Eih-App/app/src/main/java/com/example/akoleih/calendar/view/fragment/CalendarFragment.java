@@ -1,8 +1,10 @@
 package com.example.akoleih.calendar.view.fragment;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CalendarFragment extends Fragment implements CalendarView, CalendarAdapter.OnPlannedMealClickListener {
+    private static final String TAG = "CalendarFragment";
     private RecyclerView mealsRecycler;
     private CalendarAdapter adapter;
     private CalendarPresenter presenter;
@@ -71,8 +74,8 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
 
         CalendarDay today = CalendarDay.today();
         calendarView.setSelectedDate(today);
+        // Removed setMinimumDate(today) to allow past date selection
         calendarView.state().edit()
-                .setMinimumDate(today)
                 .commit();
         calendarView.addDecorator(CalendarDecorators.createPastDatesDecorator(today));
 
@@ -93,6 +96,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
                             .toLocalDate();
                     calendarView.setSelectedDate(CalendarDay.from(local));
                     presenter.loadMealsForDate(addedDate);
+                    Log.d(TAG, "Meal added for date: " + local);
                 }
         );
 
@@ -101,20 +105,23 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
                     .atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli();
+            Log.d(TAG, "Date selected: " + date + ", millis: " + millis);
             presenter.loadMealsForDate(millis);
         });
 
-        // initial load
+        // Initial load
         presenter.loadPlannedDates();
         long todayMillis = CalendarDay.today().getDate()
                 .atStartOfDay(ZoneId.systemDefault())
                 .toInstant().toEpochMilli();
         presenter.loadMealsForDate(todayMillis);
+        Log.d(TAG, "Initial load for today: " + todayMillis);
     }
 
     @Override
     public void showCalendarMeals(List<CalendarMeal> meals) {
         adapter.setMeals(meals);
+        Log.d(TAG, "Showing meals, count: " + (meals != null ? meals.size() : 0));
     }
 
     @Override
@@ -134,12 +141,14 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
             presenter.getMealCountForDate(millis).observe(getViewLifecycleOwner(), count -> {
                 mealCounts.put(day, count);
                 calendarView.invalidateDecorators();
+                Log.d(TAG, "Meal count for " + day + ": " + count);
             });
         }
 
         calendarView.removeDecorators();
         calendarView.addDecorator(CalendarDecorators.createPastDatesDecorator(CalendarDay.today()));
         calendarView.addDecorator(CalendarDecorators.createMealThumbnailDecorator(plannedDates, mealThumbnails, mealCounts, this));
+        Log.d(TAG, "Planned dates updated, count: " + dates.size());
     }
 
     @Override
@@ -154,11 +163,15 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
             mealThumbnails.remove(day);
         }
         calendarView.invalidateDecorators();
+        Log.d(TAG, "Thumbnail for " + day + ": " + thumbnailUrl);
     }
 
     @Override
     public void showError(String msg) {
-        if (isAdded()) Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        if (isAdded()) {
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Error: " + msg);
+        }
     }
 
     @Override
@@ -171,6 +184,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
                     .toInstant()
                     .toEpochMilli();
             presenter.loadMealsForDate(millis);
+            Log.d(TAG, "Calendar refreshed, selected date: " + sel);
         }
     }
 
@@ -181,11 +195,13 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
         setupSnackbarContent(sb);
         addSnackbarAnimations(sb);
         sb.show();
+        Log.d(TAG, "Showing undo snackbar");
     }
 
     @Override
     public void restoreMeal(CalendarMeal meal, int position) {
         adapter.addItem(position, meal);
+        Log.d(TAG, "Restored meal at position: " + position);
     }
 
     @Override
@@ -197,6 +213,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
+            Log.d(TAG, "Meal clicked, ID: " + meal.getMealId());
         }
     }
 
@@ -205,6 +222,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
         super.onDestroyView();
         presenter.detachView();
         calendarView.removeDecorators();
+        Log.d(TAG, "Fragment view destroyed");
     }
 
     @SuppressLint("RestrictedApi")
@@ -242,6 +260,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
         action.setOnClickListener(v -> {
             presenter.onUndoRequested();
             sb.dismiss();
+            Log.d(TAG, "Undo clicked");
         });
 
         sb.addCallback(new Snackbar.Callback() {
@@ -249,6 +268,7 @@ public class CalendarFragment extends Fragment implements CalendarView, Calendar
             public void onDismissed(Snackbar transientBar, int event) {
                 if (event != DISMISS_EVENT_ACTION) {
                     presenter.onDeleteConfirmed();
+                    Log.d(TAG, "Delete confirmed");
                 }
             }
         });
