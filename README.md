@@ -15,10 +15,6 @@
    * [Splash](#splash-module)
    * [Utils](#utils)
 4. [Project Structure](#project-structure)
-5. [Setup & Installation](#setup--installation)
-6. [Building & Running](#building--running)
-7. [Contributing](#contributing)
-8. [License](#license)
 
 ---
 
@@ -496,28 +492,6 @@ com/example/akoleih/
 └── NavigationActivity.java
 ```
 
----
-
-## Setup & Installation
-
-1. Clone the repo:
-
-   ```bash
-   git clone https://github.com/your-org/akol-eih.git
-   cd akol-eih
-   ```
-2. Open in Android Studio (minimum API 21).
-3. Ensure you have Google Play Services (for Firebase) and Internet permission in `AndroidManifest.xml`.
-4. Add your Firebase config (`google-services.json`) in `app/`.
-5. Sync Gradle to download dependencies:
-
-   ```gradle
-   implementation 'com.google.firebase:firebase-auth:21.0.1'
-   implementation 'com.google.firebase:firebase-firestore:24.0.0'
-   implementation 'androidx.room:room-runtime:2.4.2'
-   implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-   // ... other libs
-   ```
 
 
 ---
